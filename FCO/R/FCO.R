@@ -1,5 +1,3 @@
-#Don't forget to set the build directory to FCO in Build-More-Configure Build Tools
-
 #' Dataset from Babakus & Boller (1992)
 #'
 #' Data from Babakus & Boller (1992) who investigated the dimensionality of the SERVQUAL scale based on a sample of N = 502.
@@ -126,7 +124,7 @@ pop_mod <-
     eg <- expand.grid(colnames(cvm), colnames(cvm))
     eg$cvm <- round(as.vector(cvm), 3)
     eg <-
-      eg[which(as.vector(lower.tri(cvm, diag = TRUE)) == TRUE),]
+      eg[which(as.vector(lower.tri(cvm, diag = TRUE)) == TRUE), ]
     var.mod <- rep(NA, nrow(eg))
     for (i in 1:ks) {
       wh <- which(lam[, i] != 0)
@@ -454,7 +452,7 @@ gen_fit <-
       }
     }
     if (mode != "single") {
-      type = "EM"
+      type <- "EM"
       if (is.null(pop.mod1)) {
         pop.mod1 <-
           pop_mod(
@@ -468,7 +466,8 @@ gen_fit <-
       if (mode == "dual" | mode == "constraining") {
         #Dual models, no dv
         if (is.null(pop.mod2) & mode == "dual") {
-          if (is.null(mod2)) stop("No second model provided. Please revise.")
+          if (is.null(mod2))
+            stop("No second model provided. Please revise.")
           free2 <- mod2
         }
         #Constraining:
@@ -1050,7 +1049,7 @@ flex_co <-
         #Type of stats::quantile is set to 8
         if (length(index) > 1) {
           co[i] <-
-            stats::quantile(sf[i, ], probs[i], type = 8)
+            stats::quantile(sf[i,], probs[i], type = 8)
         }
         if (length(index) == 1) {
           co[i] <-
@@ -1075,15 +1074,15 @@ flex_co <-
         all(is.na(x)))]
       na <- length(fits) - length(fits.nna)
       sh.na <- na / length(fits)
-      if (!all(index %in% names(fits.nna[[1]][1, ])))
+      if (!all(index %in% names(fits.nna[[1]][1,])))
         stop("At least one selected index is not a supported fitmeasure in lavaan.")
       vf1 <-
         unname(sapply(lapply(fits.nna, function(x)
-          x[1, ]), function(x)
+          x[1,]), function(x)
             x[index]))
       vf2 <-
         unname(sapply(lapply(fits.nna, function(x)
-          x[2, ]), function(x)
+          x[2,]), function(x)
             x[index]))
       co1 <- rep(NA, length(index))
       co2 <- co1
@@ -1094,9 +1093,9 @@ flex_co <-
         #Type of stats::quantile is set to 8
         if (length(index) > 1) {
           co1[i] <-
-            stats::quantile(vf1[i, ], probs[i], type = 8)
+            stats::quantile(vf1[i,], probs[i], type = 8)
           co2[i] <-
-            stats::quantile(vf2[i, ], probs[i], type = 8)
+            stats::quantile(vf2[i,], probs[i], type = 8)
         }
         if (length(index) == 1) {
           co1[i] <-
@@ -1111,7 +1110,7 @@ flex_co <-
       rco <-
         list(
           "cutoff" = co,
-          "difference" = co[1, ] - co[2, ],
+          "difference" = co[1,] - co[2,],
           "index" = toupper(index),
           "alpha" = alpha.lev,
           "gof" = gof,
@@ -1162,10 +1161,12 @@ recommend <-
       )
     checkmate::assertCharacter(fits$mod1,
                                fixed = "=~")
-    checkmate::assertDataFrame(fits$x,
-                               min.rows = 50,
-                               min.cols = 4,
-                               col.names = "unique")
+    checkmate::assertDataFrame(
+      fits$x,
+      min.rows = 50,
+      min.cols = 4,
+      col.names = "unique"
+    )
     if (purpose != "novel")
       purpose <- "established"
     checkmate::assert(
@@ -1185,13 +1186,15 @@ recommend <-
     checkmate::assert_int(digits, lower = 1, upper = 5)
     n <- nrow(fits$x)
     fm <-
-      try(lavaan::fitmeasures(lavaan::cfa(
-        fits$mod1,
-        data = fits$x,
-        estimator = "MLM",
-        auto.fix.first = FALSE,
-        std.lv = TRUE
-      )), silent = TRUE)
+      try(lavaan::fitmeasures(
+        lavaan::cfa(
+          fits$mod1,
+          data = fits$x,
+          estimator = "MLM",
+          auto.fix.first = FALSE,
+          std.lv = TRUE
+        )
+      ), silent = TRUE)
     if (inherits(fm, "try-error"))
       stop("Invalid model or data. Please revise.")
     if (!override) {
@@ -1199,9 +1202,10 @@ recommend <-
         #C1: SRMR flex
         index <- "srmr"
         ap <- c(.001, .01, .05, .10)
-        fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
-        co <- fc[1, ]
-        gof <- fc[4, ]
+        fc <-
+          suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
+        co <- fc[1,]
+        gof <- fc[4,]
         na <- fc[6, 1]
         sh.na <- fc[7, 1]
         rf <- fm[index]
@@ -1222,9 +1226,10 @@ recommend <-
         #C3: SRMR flex
         index <- "srmr"
         ap <- c(.001, .01, .05, .10)
-        fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
-        co <- fc[1, ]
-        gof <- fc[4, ]
+        fc <-
+          suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
+        co <- fc[1,]
+        gof <- fc[4,]
         na <- fc[6, 1]
         sh.na <- fc[7, 1]
         rf <- fm[index]
@@ -1234,9 +1239,10 @@ recommend <-
         #C4: SRMR flex
         index <- "srmr"
         ap <- c(.001, .01, .05, .10)
-        fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
-        co <- fc[1, ]
-        gof <- fc[4, ]
+        fc <-
+          suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
+        co <- fc[1,]
+        gof <- fc[4,]
         na <- fc[6, 1]
         sh.na <- fc[7, 1]
         rf <- fm[index]
@@ -1256,9 +1262,10 @@ recommend <-
         #C6: SRMR flex
         index <- "srmr"
         ap <- c(.001, .01, .05, .10)
-        fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
-        co <- fc[1, ]
-        gof <- fc[4, ]
+        fc <-
+          suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
+        co <- fc[1,]
+        gof <- fc[4,]
         na <- fc[6, 1]
         sh.na <- fc[7, 1]
         rf <- fm[index]
@@ -1278,9 +1285,10 @@ recommend <-
         #C8: SRMR flex
         index <- "srmr"
         ap <- c(.001, .01, .05, .10)
-        fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
-        co <- fc[1, ]
-        gof <- fc[4, ]
+        fc <-
+          suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
+        co <- fc[1,]
+        gof <- fc[4,]
         na <- fc[6, 1]
         sh.na <- fc[7, 1]
         rf <- fm[index]
@@ -1293,9 +1301,10 @@ recommend <-
         )
       index <- tolower(index)
       ap <- c(.001, .01, .05, .10)
-      fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
-      co <- fc[1, ]
-      gof <- fc[4, ]
+      fc <-
+        suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
+      co <- fc[1,]
+      gof <- fc[4,]
       na <- fc[6, 1]
       sh.na <- fc[7, 1]
       rf <- fm[index]
@@ -1332,7 +1341,8 @@ recommend <-
       gof <- cbind(gof, unname(rf))
       rownames(gof) <- toupper(index)
       names(gof) <- c("type", "fit.values")
-      gof[,"fit.values"] <- round(gof[,"fit.values"], digits = digits)
+      gof[, "fit.values"] <-
+        round(gof[, "fit.values"], digits = digits)
       tab <- round(tab, digits = digits)
       if (fits$rep < 500)
         warning(
@@ -1358,7 +1368,8 @@ recommend <-
       gof <- cbind(gof, unname(rf))
       rownames(gof) <- toupper(index)
       names(gof) <- c("type", "fit.values")
-      gof[,"fit.values"] <- round(gof[,"fit.values"], digits = digits)
+      gof[, "fit.values"] <-
+        round(gof[, "fit.values"], digits = digits)
       res <- list(
         "recommended" = gof,
         "decisions" = decs,
@@ -1415,23 +1426,27 @@ recommend_dv <-
       )
     checkmate::assertCharacter(fits$mod1,
                                fixed = "=~")
-    checkmate::assertDataFrame(fits$x,
-                               min.rows = 50,
-                               min.cols = 4,
-                               col.names = "unique")
+    checkmate::assertDataFrame(
+      fits$x,
+      min.rows = 50,
+      min.cols = 4,
+      col.names = "unique"
+    )
     checkmate::assertVector(fits$dv.factors, len = 2, null.ok = TRUE)
     checkmate::assertLogical(fits$merge.mod, null.ok = TRUE)
     checkmate::assertVector(fits$dv.cutoff, len = 1, null.ok = TRUE)
     checkmate::assert_int(digits, lower = 1, upper = 5)
     mode <- ifelse(fits$merge.mod, "merging", "constraining")
     fm <-
-      try(lavaan::fitmeasures(lavaan::cfa(
-        fits$mod1,
-        data = fits$x,
-        estimator = "MLM",
-        auto.fix.first = FALSE,
-        std.lv = TRUE
-      )), silent = TRUE)
+      try(lavaan::fitmeasures(
+        lavaan::cfa(
+          fits$mod1,
+          data = fits$x,
+          estimator = "MLM",
+          auto.fix.first = FALSE,
+          std.lv = TRUE
+        )
+      ), silent = TRUE)
     if (inherits(fm, "try-error"))
       stop("Invalid model or data. Please revise.")
     # if (!tolower(index) %in% names(fm))
@@ -1440,15 +1455,19 @@ recommend_dv <-
     #   )
     if (mode == "constraining") {
       mod2 <-
-        constr_mod(fits$mod1, dv.factors = fits$dv.factors, dv.cutoff = fits$dv.cutoff)
+        constr_mod(fits$mod1,
+                   dv.factors = fits$dv.factors,
+                   dv.cutoff = fits$dv.cutoff)
       fm2 <-
-        try(lavaan::fitmeasures(lavaan::cfa(
-          fits$mod2,
-          data = fits$x,
-          estimator = "MLM",
-          auto.fix.first = FALSE,
-          std.lv = TRUE
-        )), silent = TRUE)
+        try(lavaan::fitmeasures(
+          lavaan::cfa(
+            fits$mod2,
+            data = fits$x,
+            estimator = "MLM",
+            auto.fix.first = FALSE,
+            std.lv = TRUE
+          )
+        ), silent = TRUE)
       if (inherits(fm2, "try-error"))
         stop("Invalid model or data. Please revise.")
     }
@@ -1460,83 +1479,90 @@ recommend_dv <-
         standardized = fits$standardized
       )$pop.mod
       pt2 <-
-        try(merge_factors(lavaan::cfa(pop.mod, fits$x, warn = FALSE), merged.factors = fits$dv.factors),
+        try(merge_factors(lavaan::cfa(pop.mod, fits$x, warn = FALSE),
+                          merged.factors = fits$dv.factors),
             silent = TRUE)
       if (inherits(pt2, "try-error"))
         stop("Merging two-factors not successful. Please check.")
       mod2 <- get_free(pt2, fits$dv.factors, mode)
       fm2 <-
-        try(lavaan::fitmeasures(lavaan::cfa(
-          mod2,
-          data = fits$x,
-          estimator = "MLM",
-          auto.fix.first = FALSE,
-          std.lv = TRUE
-        )), silent = TRUE)
+        try(lavaan::fitmeasures(
+          lavaan::cfa(
+            mod2,
+            data = fits$x,
+            estimator = "MLM",
+            auto.fix.first = FALSE,
+            std.lv = TRUE
+          )
+        ), silent = TRUE)
       if (inherits(fm2, "try-error"))
         stop("Invalid model or data. Please revise.")
     }
     index <- tolower(index)
     ap <- c(.001, .01, .05, .10)
     #gof <- ifelse(sapply(index, index_guess) == "GoF", TRUE, FALSE)
-    fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
+    fc <-
+      suppressWarnings(sapply(ap, flex_co, fits = fits, index = index))
     #fc <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index, gof = gof))
     #fc2 <- suppressWarnings(sapply(ap, flex_co, fits = fits, index = index, gof = !gof))
     #for (i in 1:length(ap)) {
     #  fc[1,][[i]][2, ] <- fc2[1,][[i]][2, ]
     #}
-    co <- lapply(fc[1, ], as.data.frame)
-    gof <- fc[5, ]
+    co <- lapply(fc[1,], as.data.frame)
+    gof <- fc[5,]
     na <- fc[7, 1]
     sh.na <- fc[8, 1]
     rf1 <- fm[tolower(index)]
     rf2 <- fm2[tolower(index)]
     tab <- data.table::rbindlist(co)
     mn <- ifelse(mode == "constraining", "constrained", "merged")
-    tab <- as.data.frame(cbind(tab, expand.grid(c("original", mn), ap)))
+    tab <-
+      as.data.frame(cbind(tab, expand.grid(c("original", mn), ap)))
     colnames(tab) <- c(toupper(index), "model", "alpha")
     fi <- data.frame(rbind(rf1, rf2))
     rownames(fi) <- NULL
     alpha <- NULL
     fi$model <- c("original", mn)
     colnames(fi)[1:length(index)] <- c(toupper(index))
-    diff <- data.frame(matrix(NA, nrow = length(ap), ncol = length(index)))
+    diff <-
+      data.frame(matrix(NA, nrow = length(ap), ncol = length(index)))
     for (i in 1:length(ap)) {
-      ss <- subset(tab, alpha == ap[i])[,1:length(index)]
-      if(length(index) == 1) {
-        diff[i, ] <- ss[1] - ss[2]
+      ss <- subset(tab, alpha == ap[i])[, 1:length(index)]
+      if (length(index) == 1) {
+        diff[i,] <- ss[1] - ss[2]
       }
-      if(length(index) > 1) {
-        diff[i,] <- ss[1,] - ss[2,]
+      if (length(index) > 1) {
+        diff[i, ] <- ss[1, ] - ss[2, ]
       }
     }
     names(diff) <- toupper(index)
-    diff <- t(rbind(diff, fi[1,1:length(index)] - fi[2,1:length(index)]))
+    diff <-
+      t(rbind(diff, fi[1, 1:length(index)] - fi[2, 1:length(index)]))
     colnames(diff) <- c(paste0("cutoff ", ap), "fit")
     decide.dv <- function(tab, fi, diff, index) {
       model <- NULL
-      ctab <- subset(tab, model == "original")[,toupper(index)]
-      cfi <- subset(fi, model == "original")[,toupper(index)]
+      ctab <- subset(tab, model == "original")[, toupper(index)]
+      cfi <- subset(fi, model == "original")[, toupper(index)]
       whr <- which(sapply(colnames(ctab), index_guess) == "BoF")
       if (!is.null(nrow(ctab))) {
         decs <- data.frame(matrix(NA, nrow = nrow(ctab), ncol = ncol(ctab)))
         for (i in 1:nrow(decs)) {
           #For GoF, that is the version from the flc paper
-          decs[i,] <- ifelse(cfi <= ctab[i,], 1, -1)
+          decs[i, ] <- ifelse(cfi <= ctab[i, ], 1,-1)
         }
         #For BoF: reverse
-        decs[,whr] <- decs[,whr] * -1
+        decs[, whr] <- decs[, whr] * -1
         decs[decs == 1] <- "confirmed"
         decs[decs == -1] <- "rejected"
       }
       if (is.null(nrow(ctab))) {
-          #For GoF, that is the version from the flc paper
-          decs <- ifelse(cfi <= ctab, 1, -1)
-          #For BoF: reverse
-          decs[whr] <- decs[whr] * -1
-          decs[decs == 1] <- "confirmed"
-          decs[decs == -1] <- "rejected"
-        }
+        #For GoF, that is the version from the flc paper
+        decs <- ifelse(cfi <= ctab, 1,-1)
+        #For BoF: reverse
+        decs[whr] <- decs[whr] * -1
+        decs[decs == 1] <- "confirmed"
+        decs[decs == -1] <- "rejected"
+      }
       return(decs)
     }
     # decide.dv <- function(diff) {
@@ -1560,9 +1586,9 @@ recommend_dv <-
     decs <- data.frame(decs)
     names(decs) <- colnames(diff)
     rownames(decs) <- rownames(diff)[1:length(ap)]
-    tab[,toupper(index)] <- round(tab[,toupper(index)], digits)
-    fi[,toupper(index)] <- round(fi[,toupper(index)], digits)
-    diff[,toupper(index)] <- round(diff[,toupper(index)], digits)
+    tab[, toupper(index)] <- round(tab[, toupper(index)], digits)
+    fi[, toupper(index)] <- round(fi[, toupper(index)], digits)
+    diff[, toupper(index)] <- round(diff[, toupper(index)], digits)
     if (fits$rep < 500)
       warning(
         "The number of replications is lower than the recommended minimum of 500. Consider with care."
