@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>FCO</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">FCO</h1>
+
+
+
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<div id="motivation" class="section level2">
+<h2>Motivation</h2>
+<p>This package allows users to derive flexible cutoffs for the evaluation of absolute model fit in Covariance-Based Structural Equation Modeling (CBSEM).</p>
+<p>For CBSEM, a multitude of fit indices have been proposed, roughly classified as Goodness-of-Fit (GoF), such as CFI (Comparative Fit Index), or Badness-of-Fit (BoF), including SRMR (Standardized Root Mean Square Residual). Despite its initial appeal, all fit indices are distorted by characteristics of the model (e.g., size of the model) and sample characteristics (e.g., sample size) to some degree. Hence, their ability to determine whether a model has a truly “good” fit or not is often masked by an unwanted sensitivity to model and sample characteristics.</p>
+<p>Consequentially, widely acknowledged recommendations and guidelines (e.g., CFI &gt;= .95 indicates “good” fit) struggle with these distortions because their “fixed” cutoffs remain constant, irrespective of the model and sample characteristics investigated. For example, CFI tends to be sensitive to sample size. A rather small sample (e.g., N = 200) will almost always produce smaller CFIs than a rather large sample (e.g., N = 1,000). Hence, fixed cutoffs for CFI, such as .95 will likely reject more correct models for small sample sizes and likely accept more incorrect models for larger sample sizes.</p>
+<p>Flexible cutoffs aim to overcome this deficit by providing customized cutoff values for a given model with specific model and sample characteristics. For the above example, a flexible cutoff will decrease (to e.g., .94 for N = 200) or increase (to e.g., .98 for N = 1,000) depending on the model and its characteristics.</p>
+<p>Flexible cutoffs are derived from simulated distributions of correctly specified Confirmatory Factor Analysis (CFA) models for a wide range of latent variables (or factors), indicators per latent variable, sample sizes, factor loadings, and normal as well as non-normal data. Flexible cutoffs can be understood as the empirical quantile of a given index for a predefined uncertainty. If an uncertainty of 5 percent (or .05) is accepted a-priori, the 5 percent quantile of the simulated distribution for correctly specified CFA models, with the given model and sample characteristics, will determine the flexible cutoff. Depending on the nature of the underlying fit index, the appropriate lower (GoF) or upper (BoF) width of the respective confidence interval, as defined by the quantile, is used to derive the flexible cutoff.</p>
+<p>Thereby, flexible cutoffs are also flexible in the recommendations they provide. If users are more uncertain about their model, they can adjust the uncertainty to 10 percent (or .10). When being more certain about the underlying model, the uncertainty can be adjusted to .1, or even .001. Note that this uncertainty is inverse to the understanding of a p-value. A researcher admits how uncertain s/he is about a given model and thus .10 indicates very conservative cutoffs, while .001 determines very lenient cutoffs.</p>
+<p>Details on the procedure and methods can be found in the paper “Flexible Cutoff Values for Fit Indices in the Evaluation of Structural Equation Models” (Niemand and Mai, 2018).</p>
+</div>
+<div id="package-and-tool" class="section level2">
+<h2>Package and tool</h2>
+<p>From 2018 to 2021, we provided a website-based tool on flexiblecutoffs.org that allowed users to input certain parameters and obtain the respective flexible cutoffs from pre-run simulations. Given the limitations of this approach (parameters to be simulated are finite) and user feedback, we decided to deprecate the tool on the website and instead offer this package FCO. We believe that this provides multiple advantages for users, particularly:</p>
+<ul>
+<li><p>Empirical: Using lavaan to define and estimate the users’ own model. Hence, parameters such as the number of latent variables and sample size are not required to be specified, but are taken from the lavaan model.</p></li>
+<li><p>More flexibility: A myriad of new functions and arguments are available to assist the user and provide more options to individualize the flexible cutoffs to a given model. For example, relative cutoffs can be derived for two models to be compared (e.g., nested models). Users can choose from different types of settings for the underlying population model (including empirical relationships). Finally, discriminant validity can be tested by comparing fit indices for merged and constrained models (Rönkkö &amp; Cho, 2020). We also include helper functions to obtain population models, constrain models and guessing the type of index (GoF, BoF).</p></li>
+<li><p>Speed: Given the two previous advantages, deriving flexible cutoffs still requires essential simulations. In order to overcome this, the simulation functions are written using parallel processing (via mclapply on Linux or Mac or parLapply on Windows) to speed up the code. With a decent number of replications (default: 500) and a modern CPU, flexible cutoffs can be obtained in a few minutes or even seconds.</p></li>
+<li><p>Transparency: With switching to an R package, the code of all functions becomes transparent, allowing users to better understand the derivations as well as provide feedback and troubleshooting regarding issues (and there will be many, certainly).</p></li>
+</ul>
+<p>As a side note of transforming the previous tool into a package, flexible cutoffs obtained from tool and package are not identical, but certainly very close to each other. This disadvantage stems from the differential use of seeds in the pre-run simulations and the present package-based simulations as well as the implementation of the new features. If you detect substantial differences between flexible cutoffs, please contact us.</p>
+</div>
+</div>
+<div id="getting-started" class="section level1">
+<h1>Getting started</h1>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>As usual, the package is available on CRAN and can be installed easily:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;FCO&quot;)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Add later when published on CRAN</span></span></code></pre></div>
+<p>Then, the package can be loaded, for example with (required packages, if installed, will be loaded automatically):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FCO)</span></code></pre></div>
+</div>
+<div id="basic-usage" class="section level2">
+<h2>Basic usage</h2>
+<p>In an initial example, a normal user has two objects, a dataset <strong>x</strong> and a (theoretical) model <strong>mod</strong> to be estimated. For illustrative purposes, we use the data from Babakus and Boller (1992), which is available as a correlation matrix of 22 items (Q1-Q22) for the SERVQUAL scale consisting of five factors (here F1 to F5). We simulated 502 observations from the original correlation matrix via <code>MASS::mvrnorm</code> and provide it as a data.frame. This dataset is included in the package:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(bb1992)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bb1992, <span class="dv">3</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Q1         Q2         Q3        Q4         Q5         Q6         Q7</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 -1.0206565  0.2276041 -1.2568654 0.8136901 -1.6019692  0.7552052 -0.4227379</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  1.5938691 -0.0276403 -1.2359269 0.4527496  0.4198624  1.2915004  0.3614339</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  0.6432085  0.5146161  0.9700383 0.5768854  0.1788848 -0.2423614  0.7111541</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Q8          Q9        Q10        Q11        Q12       Q13         Q14</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 -1.2791570  0.13263442 -0.4502009 -0.3691879 -0.5386581 -1.238408  0.02816952</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  0.4577506 -0.05877489  0.6064040  0.9672691  1.1028063  1.784519 -0.47735634</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 -0.5452735 -0.54137900 -0.8755678  0.3516510 -1.9334731 -0.498252 -0.33502753</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           Q15        Q16        Q17        Q18          Q19        Q20</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 -0.36047328  0.3736429 -0.3124173  0.3765030 -0.956071795 1.50488335</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  0.17534870  0.2421734  1.7328168  0.3081753  0.004130691 0.62142902</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 -0.07986953 -1.4054425 -0.7272241 -0.7679232  0.009754038 0.07108398</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;          Q21        Q22</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 -0.2591684 -0.4093789</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  0.9135299  1.1154500</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 -0.6949648  1.7242517</span></span></code></pre></div>
+<p>The second object required is a model to be fitted to the data. A simple <strong>lavaan</strong> syntax for an empirical five-factor solution looks like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">F1 =~ Q5 + Q7 + Q8</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">F2 =~ Q2 + Q4</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">F4 =~ Q1 + Q17</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">F5 =~ Q6 + Q14 + Q15 + Q16</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span></code></pre></div>
+<p>Both objects, the dataset <code>bb1992</code>, and the model <code>mod</code> can then be used to estimate the CFA via <strong>lavaan</strong>. For simplicity reasons, we focus on two fit indices, <strong>CFI</strong> and <strong>SRMR</strong> in this example (Niemand &amp; Mai, 2018, p. 1170).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">cfa</span>(mod, <span class="at">data =</span> bb1992)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fitmeasures</span>(res, <span class="at">fit.measures =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   cfi  srmr </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.960 0.038</span></span></code></pre></div>
+<p>Note that both values would suffice fixed cutoffs such as CFI ≥ .95 and SRMR ≤ .09, hence concluding that the model fits the data well. However, given the empirical setting of the example study, it would be beneficial to investigate the uncertainty of this finding. This is where flexible cutoffs come into play.</p>
+<p>To derive the flexible cutoffs, one only needs the two objects discussed before. All other arguments are set internally via standard options (see below). In this case, we however only use 100 replications to speed up the derivation. The function <code>gen_fit</code> generates a list <code>fits.single</code> of fit indicators for the underlying data and model, as well as lists for the other arguments. The function <code>flex_co</code> then takes this list and estimates the intended flexible cutoffs for the selected fit indices. Since the default setting for the preset uncertainty is .05, we can also omit this argument. For now, this code is sufficient:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fits.single <span class="ot">&lt;-</span> <span class="fu">gen_fit</span>(<span class="at">mod1 =</span> mod, <span class="at">x =</span> bb1992, <span class="at">rep =</span> <span class="dv">100</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(<span class="at">fits =</span> fits.single, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.single, index = c(&quot;CFI&quot;, &quot;SRMR&quot;)): The number of</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; replications is lower than the recommended minimum of 500. Consider with care.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        CFI       SRMR </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.97106269 0.03624088 </span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;  &quot;SRMR&quot;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   CFI  SRMR </span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  TRUE FALSE </span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<p>In this case, the second function returns a warning that the number of replications is below the recommended minimum. For non-illustrative purposes, we recommend higher values (e.g., 500 or 1,000). The function <code>flex_co</code> also returns objects <code>cutoff</code>, <code>index</code>, <code>alpha</code>, <code>gof</code>, <code>replications</code>, <code>number of non-converging models</code> and <code>share of non-converging models</code>. <code>Cutoff</code> provides the flexible cutoff values for the selected indices. <code>Index</code> returns the name of the indices selected and alpha returns the preset uncertainty. <code>Gof</code> returns the type of fit index (GoF or BoF, logically, GoF = FALSE indicates BoF). This can be either stated manually in the function with the argument <code>gof</code> or is guessed by the helper function <code>index_guess</code>, which works for all established fit indices.</p>
+<p>Note that the cutoff values for CFI and SRMR are higher (CFI = .971) and lower (SRMR = .036) than the respective empirical values (CFI = .960, SRMR = .038). That is, given the uncertainty of .05, as well as the present model and data, the cutoffs are close to the empirical values, but the model is marginally rejected. We can however simulate what happens if we assume less (.001) or more (.10) uncertainty.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(<span class="at">fits =</span> fits.single,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha.lev =</span> .<span class="dv">001</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.single, index = c(&quot;CFI&quot;, &quot;SRMR&quot;), alpha.lev =</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.001): The number of replications is lower than the recommended minimum of 500.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Consider with care.</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        CFI       SRMR </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.96214289 0.04029933 </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;  &quot;SRMR&quot;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.001</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   CFI  SRMR </span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  TRUE FALSE </span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(<span class="at">fits =</span> fits.single,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>),</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha.lev =</span> .<span class="dv">10</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.single, index = c(&quot;CFI&quot;, &quot;SRMR&quot;), alpha.lev =</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.1): The number of replications is lower than the recommended minimum of 500.</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Consider with care.</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        CFI       SRMR </span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.97683932 0.03558315 </span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;  &quot;SRMR&quot;</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.1</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   CFI  SRMR </span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  TRUE FALSE </span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<p>We do not need to re-simulate the flexible cutoffs, as the function <code>flex_co</code> takes the simulated values from the generated fit indices and we only need to change the uncertainty via the <code>alpha.lev</code> argument. As expected, if one assumes less uncertainty—or more certainty, for example because the model has been tested before—the flexible cutoffs are closer (CFI = .962, SRMR = .040) to the empirical values. Likewise, when assuming more uncertainty (e.g., a novel model), the cutoffs more clearly reject the model.</p>
+<p>In principle, this is the core usage originally intended for flexible cutoffs. We however included a substantial number of other features that may be interesting for users. The following chapter gives an overview of the possible features.</p>
+</div>
+</div>
+<div id="details" class="section level1">
+<h1>Details</h1>
+<div id="population-model" class="section level2">
+<h2>Population model</h2>
+<p>The basic idea of flexible cutoffs is that these cutoffs come from a <strong>sui-generis</strong> (having it’s own shape) <strong>distribution</strong> of fit indices for a correct, unbiased model. Essentially, this means that the population model is correctly specified with no errors. For example, all observed variables load on the latent variables they are supposed to load on, all correlations are estimated freely, and the data is not excessively skewed. This assumption makes flexible cutoffs potentially more objective since no subjective modification to the model (misspecification) or data (skewness, kurtosis) is needed. However, this also implies that the population model is specified not simply on the basis of the own empirical model. In an anecdotal manner, one can compare this to the introduction of the meter. Assuming that one’s own measure is exactly 1 meter is likely error prone. One needs a validated meter bar. The meter bar in this case is the <strong>population model</strong>.</p>
+<p>The function <code>pop_mod</code> specifies this population model. We offer three types of population models, the NM (Niemand &amp; Mai, 2018) option, the HB (Hu &amp; Bentler, 1999) option, and the EM (empirical) option. Function <code>gen_fit</code> internally calls function <code>pop_mod</code>, but the argument <code>type</code> is also available in the latter function for flexibility. We can compare these models by:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pop_mod</span>(mod, <span class="at">x =</span> bb1992, <span class="at">type =</span> <span class="st">&quot;NM&quot;</span>)<span class="sc">$</span>pop.mod</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;F1=~0.7*Q5+0.7*Q7+0.7*Q8 \nF2=~0.7*Q2+0.7*Q4 \nF3=~0.7*Q10+0.7*Q11+0.7*Q12+0.7*Q13+0.7*Q18+0.7*Q19+0.7*Q20+0.7*Q21+0.7*Q22 \nF4=~0.7*Q1+0.7*Q17 \nF5=~0.7*Q6+0.7*Q14+0.7*Q15+0.7*Q16 \nF1~~1*F1 \nF2~~0.3*F1 \nF3~~0.3*F1 \nF4~~0.3*F1 \nF5~~0.3*F1 \nF2~~1*F2 \nF3~~0.3*F2 \nF4~~0.3*F2 \nF5~~0.3*F2 \nF3~~1*F3 \nF4~~0.3*F3 \nF5~~0.3*F3 \nF4~~1*F4 \nF5~~0.3*F4 \nF5~~1*F5 \n \n&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pop_mod</span>(mod, <span class="at">x =</span> bb1992, <span class="at">type =</span> <span class="st">&quot;HB&quot;</span>)<span class="sc">$</span>pop.mod</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;F1=~0.7*Q5+0.75*Q7+0.8*Q8 \nF2=~0.75*Q2+0.75*Q4 \nF3=~0.7*Q10+0.7*Q11+0.7*Q12+0.7*Q13+0.75*Q18+0.8*Q19+0.8*Q20+0.8*Q21+0.8*Q22 \nF4=~0.75*Q1+0.75*Q17 \nF5=~0.7*Q6+0.75*Q14+0.75*Q15+0.8*Q16 \nF1~~1*F1 \nF2~~0.5*F1 \nF3~~0.4*F1 \nF4~~0.3*F1 \nF5~~0.5*F1 \nF2~~1*F2 \nF3~~0.4*F2 \nF4~~0.5*F2 \nF5~~0.4*F2 \nF3~~1*F3 \nF4~~0.3*F3 \nF5~~0.5*F3 \nF4~~1*F4 \nF5~~0.4*F4 \nF5~~1*F5 \n \n&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pop_mod</span>(mod, <span class="at">x =</span> bb1992, <span class="at">type =</span> <span class="st">&quot;EM&quot;</span>)<span class="sc">$</span>pop.mod</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;F1=~0.807*Q5+0.637*Q7+0.876*Q8 \nF2=~0.747*Q2+0.842*Q4 \nF3=~0.519*Q10+0.568*Q11+0.597*Q12+0.697*Q13+0.603*Q18+0.557*Q19+0.534*Q20+0.578*Q21+0.552*Q22 \nF4=~0.659*Q1+0.772*Q17 \nF5=~0.727*Q6+0.719*Q14+0.826*Q15+0.752*Q16 \nF1~~1*F1 \nF2~~0.36*F1 \nF3~~0.71*F1 \nF4~~0.641*F1 \nF5~~0.807*F1 \nF2~~1*F2 \nF3~~0.349*F2 \nF4~~0.486*F2 \nF5~~0.492*F2 \nF3~~1*F3 \nF4~~0.625*F3 \nF5~~0.8*F3 \nF4~~1*F4 \nF5~~0.831*F4 \nF5~~1*F5 \n \n&quot;</span></span></code></pre></div>
+<p>When the type is “NM”, all loadings (default: .7) and correlations (default: .3) are assumed to be equal (\n denotes a line break for the <strong>lavaan</strong> syntax). When the type is “HB”, the loadings vary by .05 around .75, depending on the number of indicators and the correlations are either .5, .4, or .3, also depending on the number of latent variables. Finally, when the type is “EM”, the function runs a CFA and determines the empirical loadings and correlations. Since one cannot assume the own empirical model to be correct, we advise users to not use the “EM” type for model validation. This type might be useful for other features (see further applications). Hence, the <strong>default</strong> is set to “NM”. Since the by far most selected standardized factor loading (<code>afl</code>) in our tool was .7, we set the default value to .7. Other options between 0 and 1 are possible. The average correlation between latent variables (<code>aco</code>) is set to a default of .3, but this can be changed likewise. To increase flexibility, the argument <code>standardized</code> (default: TRUE) can also be called, allowing for the specification of standardized (all loadings &lt; 1, all covariances are correlations) and unstandardized (loadings &gt; 1, covariances, not correlations) parameters. The function returns a warning when the empirical model suspects standardized or unstandardized loadings and this is in conflict with the <code>standardized</code> argument. See below:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pop_mod</span>(mod, <span class="at">x =</span> bb1992, <span class="at">type =</span> <span class="st">&quot;NM&quot;</span>, <span class="at">afl =</span> .<span class="dv">9</span>)<span class="sc">$</span>pop.mod</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;F1=~0.9*Q5+0.9*Q7+0.9*Q8 \nF2=~0.9*Q2+0.9*Q4 \nF3=~0.9*Q10+0.9*Q11+0.9*Q12+0.9*Q13+0.9*Q18+0.9*Q19+0.9*Q20+0.9*Q21+0.9*Q22 \nF4=~0.9*Q1+0.9*Q17 \nF5=~0.9*Q6+0.9*Q14+0.9*Q15+0.9*Q16 \nF1~~1*F1 \nF2~~0.3*F1 \nF3~~0.3*F1 \nF4~~0.3*F1 \nF5~~0.3*F1 \nF2~~1*F2 \nF3~~0.3*F2 \nF4~~0.3*F2 \nF5~~0.3*F2 \nF3~~1*F3 \nF4~~0.3*F3 \nF5~~0.3*F3 \nF4~~1*F4 \nF5~~0.3*F4 \nF5~~1*F5 \n \n&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pop_mod</span>(mod, <span class="at">x =</span> bb1992, <span class="at">type =</span> <span class="st">&quot;NM&quot;</span>, <span class="at">aco =</span> .<span class="dv">5</span>)<span class="sc">$</span>pop.mod</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;F1=~0.7*Q5+0.7*Q7+0.7*Q8 \nF2=~0.7*Q2+0.7*Q4 \nF3=~0.7*Q10+0.7*Q11+0.7*Q12+0.7*Q13+0.7*Q18+0.7*Q19+0.7*Q20+0.7*Q21+0.7*Q22 \nF4=~0.7*Q1+0.7*Q17 \nF5=~0.7*Q6+0.7*Q14+0.7*Q15+0.7*Q16 \nF1~~1*F1 \nF2~~0.5*F1 \nF3~~0.5*F1 \nF4~~0.5*F1 \nF5~~0.5*F1 \nF2~~1*F2 \nF3~~0.5*F2 \nF4~~0.5*F2 \nF5~~0.5*F2 \nF3~~1*F3 \nF4~~0.5*F3 \nF5~~0.5*F3 \nF4~~1*F4 \nF5~~0.5*F4 \nF5~~1*F5 \n \n&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pop_mod</span>(mod, <span class="at">x =</span> bb1992, <span class="at">type =</span> <span class="st">&quot;EM&quot;</span>, <span class="at">standardized =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>pop.mod</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in pop_mod(mod, x = bb1992, type = &quot;EM&quot;, standardized = FALSE): All</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; loadings are &lt; 1. Consider revision of standardized.</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;F1=~0.807*Q5+0.637*Q7+0.876*Q8 \nF2=~0.747*Q2+0.842*Q4 \nF3=~0.519*Q10+0.568*Q11+0.597*Q12+0.697*Q13+0.603*Q18+0.557*Q19+0.534*Q20+0.578*Q21+0.552*Q22 \nF4=~0.659*Q1+0.772*Q17 \nF5=~0.727*Q6+0.719*Q14+0.826*Q15+0.752*Q16 \nF1~~1*F1 \nF2~~0.36*F1 \nF3~~0.71*F1 \nF4~~0.641*F1 \nF5~~0.807*F1 \nF2~~1*F2 \nF3~~0.349*F2 \nF4~~0.486*F2 \nF5~~0.492*F2 \nF3~~1*F3 \nF4~~0.625*F3 \nF5~~0.8*F3 \nF4~~1*F4 \nF5~~0.831*F4 \nF5~~1*F5 \n&quot;</span></span></code></pre></div>
+</div>
+<div id="assumptions-from-data" class="section level2">
+<h2>Assumptions from data</h2>
+<p>In order to follow this principle of objectivity, the data <code>x</code> is essentially not that important for deriving flexible cutoffs, unless specified differently. That is, <code>x</code> determines the sample size (N) for the simulations and the multivariate non-normality of the data, if <code>assume.mvn = FALSE</code> (default: TRUE). Both are only relevant for the <code>gen_fit</code> function.</p>
+<p>Internally, the function <code>gen_fit</code> calls the <code>simulateData</code> function from <strong>lavaan</strong>, which itself does not require data, but takes a population model from function <code>pop_mod</code>. Sample size is specified via <code>sample.nobs</code> by <code>nrow(x)</code>. Arguments skewness and kurtosis are derived from <code>semTools::mardiaKurtosis(x)</code> and <code>semTools::mardiaSkew(x)</code> in package <strong>semTools</strong>, if <code>assume.mvn = FALSE</code>.</p>
+<p>Since there seems to be no unified agreement on what “no”, “low”, “moderate”, or “high” kurtosis / skewness constitutes (Niemand &amp; Mai, 2018), we omitted the once verbally differentiated levels available in the tool. As mentioned before, <code>x</code> is also needed for the empirical population model type “EM” in <code>pop_mod</code>.</p>
+</div>
+<div id="index-guessing" class="section level2">
+<h2>Index guessing</h2>
+<p>For flexible cutoffs, the type of a fit index (GoF or BoF) plays an essential role, as the lower (GoF) or upper (BoF) width of a confidence interval is required. Since empirically guessing the type may be misleading (e.g., a very bad model may produce a distribution of SRMR that is not different from a distribution for a CFI in a better fitting model), we implemented a helper function <code>index_guess</code> that simply guesses the fit index by name (upper or lowercase considered):</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">index_guess</span>(<span class="st">&quot;cfi&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;GoF&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">index_guess</span>(<span class="st">&quot;CFI&quot;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;GoF&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">index_guess</span>(<span class="st">&quot;srmr&quot;</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;BoF&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">index_guess</span>(<span class="st">&quot;SRMR&quot;</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;BoF&quot;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">index_guess</span>(<span class="st">&quot;mickey_mouse&quot;</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;not a fit index&quot;</span></span></code></pre></div>
+<p>This function is applied in the <code>flex_co</code> function. If one specifies established fit indices, such as CFI or SRMR, the <code>gof</code> argument is not required. However, this feature does not override the <code>gof</code> argument. For example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">fits =</span> fits.single,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">gof =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.single, index = c(&quot;CFI&quot;, &quot;SRMR&quot;), gof = c(TRUE, :</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The number of replications is lower than the recommended minimum of 500.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Consider with care.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        CFI       SRMR </span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.97106269 0.03624088 </span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;  &quot;SRMR&quot;</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   CFI  SRMR </span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  TRUE FALSE </span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">fits =</span> fits.single,</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>),</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">gof =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.single, index = c(&quot;CFI&quot;, &quot;SRMR&quot;), gof =</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; c(FALSE, : The number of replications is lower than the recommended minimum of</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 500. Consider with care.</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        CFI       SRMR </span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.00000000 0.02946187 </span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;  &quot;SRMR&quot;</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   CFI  SRMR </span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; FALSE  TRUE </span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+<p>The first version (the <code>gof</code> argument can also be omitted as the guess is correct) gives the correct flexible cutoffs, the second version does not, as CFI is not a BoF and SRMR is not a GoF. Hence, users should be careful with specifying this argument. For novel fit indices or alternative uses, it may however be beneficial to maintain this argument.</p>
+</div>
+<div id="visualizing-the-distribution-of-simulated-fit-indices" class="section level2">
+<h2>Visualizing the distribution of simulated fit indices</h2>
+<p>For a better understanding, we can plot the empirical values and cutoffs by taking values from the list generated by <code>gen_fit</code>. To obtain a better distribution, the replications are increased to 1,000 before plotting the distribution, density, and the cutoffs (.05: red, solid; .01: yellow, dashed; .001: green, dotted). Since all fit indices are stored in the <code>gen_fit</code> list object, this can easily be applied to other fit indices by changing the name “srmr” in the internal function <code>function(x) unname(x[c(&quot;srmr&quot;)]))</code></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fits<span class="fl">.1000</span> <span class="ot">&lt;-</span> <span class="fu">gen_fit</span>(<span class="at">mod1 =</span> mod, <span class="at">x =</span> bb1992, <span class="at">rep =</span> <span class="dv">1000</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>srmr <span class="ot">&lt;-</span> <span class="fu">sapply</span>(fits<span class="fl">.1000</span><span class="sc">$</span>fco, <span class="cf">function</span>(x) <span class="fu">unname</span>(x[<span class="fu">c</span>(<span class="st">&quot;srmr&quot;</span>)]))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Note that SRMR is a gof, so we look for the right side</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>qu <span class="ot">&lt;-</span> <span class="fu">quantile</span>(srmr, <span class="at">probs =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">c</span>(.<span class="dv">001</span>, .<span class="dv">01</span>, .<span class="dv">05</span>, .<span class="dv">100</span>), <span class="at">type =</span> <span class="dv">8</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(qu)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      99.9%        99%        95%        90% </span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.04014360 0.03866045 0.03676286 0.03588966</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(srmr), <span class="fu">aes</span>(<span class="at">x =</span> srmr)) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_grey</span>() <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> .<span class="dv">2</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> qu[<span class="dv">1</span>],</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;darkgreen&quot;</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">1.0</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> qu[<span class="dv">2</span>],</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>,</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">1.0</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> qu[<span class="dv">3</span>],</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;solid&quot;</span>,</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">1.0</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="multi-core-support" class="section level2">
+<h2>Multi-core support</h2>
+<p>Since simulations may need some time, we implemented multi-core support. Depending on the system the package runs on, function <code>gen_fit</code> uses <code>mclapply</code> (on Linux or Mac) and <code>parLapply</code> (on Windows) from package <strong>parallel</strong>. The default is set to TRUE and two cores.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">gen_fit</span>(<span class="at">mod1 =</span> mod, <span class="at">x =</span> bb1992, <span class="at">rep =</span> <span class="dv">100</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        User      System verstrichen </span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       5.339       0.136       5.558</span></span></code></pre></div>
+<p>In the fortunate situation that a user has more cores, more cores can be set by the argument cores. However, note that the function returns an error if the number of available cores of the system is lower than the number of cores provided by the <code>cores</code> argument (e.g., <code>cores = 4</code>). Of course, multi-core support can be switched off by setting the argument <code>multi.core = FALSE</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">gen_fit</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mod1 =</span> mod,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> bb1992,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">rep =</span> <span class="dv">100</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">multi.core =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in lav_object_post_check(object): lavaan </span><span class="al">WARNING</span><span class="co">: some estimated ov</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; variances are negative</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        User      System verstrichen </span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      10.442       0.230      10.739</span></span></code></pre></div>
+</div>
+<div id="recommendations" class="section level2">
+<h2>Recommendations</h2>
+<p>One quintessential issue we notice in many papers, reviews, and PhD courses is that non-experts do not know which fit index or fit indicator to choose. To summarize, this is the major question one of our papers investigates (Mai et al., 2021) and the main message is that one should follow a <strong>tailor-fit approach</strong>. Depending on three settings, a) <strong>sample size</strong>, b) <strong>research purpose</strong> (novel or established model), and c) <strong>focus</strong> (confirming a factorial structure, i.e., CFA or investigating a theoretical, structural model), different fit indicators are recommended.</p>
+<p>The differentiation between <strong>novel</strong> or <strong>established</strong> <strong>model</strong> might need some explanation. Fit indicators often yield different Type I and II errors. When an established model that has been empirically investigated many times before (e.g., Theory of Planned Behavior-models) is tested, it makes sense to put more weight on Type I error. However, when the model has never been tested before, it makes sense to put more weight on the Type II error. Since fixed cutoffs show worse hit rates for higher Type II error weights (1:3, 1:4), they may be poorly performing for novel models.</p>
+<p>We built the function <code>recommend</code> to incorporate this tailor-fit approach in a user-friendly way. It requires the simulated fit indices and the arguments for <code>purpose</code> and <code>focus</code>. Sample size is determined automatically. Results are rounded to 3 digits, but can be changed to 1 to 5 digits if needed, for example by <code>digits = 5.</code></p>
+<p>Since the most obvious application is to conduct a CFA on a novel model, the standard arguments of purpose and focus are set to this application. Hence, when we use no further arguments, we get the following recommendation:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recommend</span>(fits.single)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in recommend(fits.single): The number of replications is lower than the</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; recommended minimum of 500. Consider with care.</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $recommended</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      type fit.values</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SRMR  BoF      0.038</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoffs</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               SRMR</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 0.040</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  0.039</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05  0.036</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1   0.036</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $decisions</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   SRMR</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 confirmed</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  confirmed</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05   rejected</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1    rejected</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Recommendations based on flexible cutoffs and Mai et al. (2021)&quot;</span></span></code></pre></div>
+<p>SRMR is recommended due to the purpose, focus, and sample size (n = 502) in line with the recommendations by Mai et al. (2021). Hence, the lone fit indicator we need to report is SRMR. The function also returns the type of the fit indicator, which is guessed from <code>index_guess</code> and the actual value of the SRMR in the model.</p>
+<p>Additionally, the function provides a sensitivity analysis for different values of uncertainty, .001 (.1 percent), .01 (1 percent), .05 (5 percent) and .10 (10 percent) and makes a decision given the cutoff. For completeness, replications, the number of non-converging models, and their share are also provided.</p>
+<p>The result found here demonstrates the consequences of uncertainty for the decision. When one is very conservative and assumes a high Type I error (.10), the cutoff (.036) is lower than the actual value (.038) and hence the present model should be rejected. When one is very lenient and feels safe with the model (.001), the cutoff (.040) is higher than the actual value and hence the model can be confirmed.</p>
+<p>Let us assume for a moment that Babakus and Boller had not been as exploratory as they were and simply looked for confirmation of an established measurement model. So, we change the purpose argument to established.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recommend</span>(fits.single, <span class="at">purpose =</span> <span class="st">&quot;established&quot;</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $recommended</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     type fit.values</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CFI  GoF       0.96</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $decisions</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;confirmed&quot;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Recommendations based on fixed cutoffs and Mai et al. (2021)&quot;</span></span></code></pre></div>
+<p>Now the recommendation changes to CFI with a fixed cutoff. Consequently, no uncertainty is provided (as they are fixed) and the recommendation is to confirm the model because the actual value (.960) is above the fixed cutoff of .95. This demonstrates two things. First, the recommend function also recommends fixed cutoffs when it is acceptable to do so (see Mai et al. 2021). Second, it shows what happens when assuming established models (and hence a low importance of Type II error): Type I errors become more important. Compare this with the lenient uncertainty before (.001), from the first recommendation, where SRMR also confirms the model. In other words, we feigned to be very certain by assuming the model to be an established model (ignoring the doubts) and hence got a very determined answer.</p>
+<p>Finally, for exploratory investigations, one can also override the recommendations programmed into the function by using the <code>override</code> argument. This however requires users to provide one or more indices with the argument <code>index</code> (otherwise, an error is returned).</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recommend</span>(fits.single,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">override =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in recommend(fits.single, override = TRUE, index = c(&quot;CFI&quot;, &quot;SRMR&quot;)):</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The number of replications is lower than the recommended minimum of 500.</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Consider with care.</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $recommended</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      type fit.values</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; CFI   GoF      0.960</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SRMR  BoF      0.038</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoffs</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                CFI  SRMR</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 0.962 0.040</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  0.962 0.039</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05  0.971 0.036</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1   0.977 0.036</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $decisions</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                   CFI      SRMR</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 rejected confirmed</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  rejected confirmed</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05  rejected  rejected</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1   rejected  rejected</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Override mode&quot;</span></span></code></pre></div>
+<p>In the example, we provide CFI and SRMR and get the appropriate recommendations for them. Unsurprisingly, the recommendations do not change much (SRMR is confirmed for levels of .001 and .01 uncertainty, otherwise the model is rejected). Please note that purpose and focus are without function in this case, as the recommendations by Mai et al. (2021) are overridden.</p>
+</div>
+</div>
+<div id="further-applications" class="section level1">
+<h1>Further applications</h1>
+<div id="relative-fit-comparison" class="section level2">
+<h2>Relative fit comparison</h2>
+<p>A popular feature in CBSEM is to <strong>compare nested models</strong>, for example testing some type of invariance between groups, comparing alternative theoretical models or discriminant validity testing (see next chapter for the latter). So far, we allow users to incorporate a second model by specifying the <code>mod2</code> argument in function <code>gen_fit</code>. In this case, the resulting fits from function are not vectors in a list of the length of replications, but a matrix with two rows. Function <code>flex_co</code> then produces a slightly different output displaying the flexible cutoffs for both models as well as the difference between the two models.</p>
+<p>Let us assume that the first two factors F1 and F2 might be orthogonal (independent). Hence, we constrain the factor correlation between both to zero (<code>F1 ~~ 0 * F2</code>).</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(<span class="fu">parameterestimates</span>(res, <span class="at">standardized =</span> T), lhs <span class="sc">==</span> <span class="st">&quot;F1&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>         rhs <span class="sc">==</span> <span class="st">&quot;F2&quot;</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    lhs op rhs   est    se     z pvalue ci.lower ci.upper std.lv std.all std.nox</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 46  F1 ~~  F2 0.217 0.038 5.736      0    0.143    0.291   0.36    0.36    0.36</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>mod.con <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">F1 =~ Q5 + Q7 + Q8</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">F2 =~ Q2 + Q4</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">F4 =~ Q1 + Q17</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">F5 =~ Q6 + Q14 + Q15 + Q16</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">F1 ~~ 0 * F2</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>fits.con <span class="ot">&lt;-</span> <span class="fu">gen_fit</span>(</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">mod1 =</span> mod,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">mod2 =</span> mod.con,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> bb1992,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">rep =</span> <span class="dv">100</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(<span class="at">fits =</span> fits.con,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>),</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha.lev =</span> .<span class="dv">05</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.con, index = c(&quot;CFI&quot;, &quot;SRMR&quot;), alpha.lev =</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.05): The number of replications is lower than the recommended minimum of 500.</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Consider with care.</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               CFI       SRMR</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 1 0.9709205 0.03468864</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 2 0.9564919 0.05484529</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $difference</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         CFI        SRMR </span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.01442864 -0.02015665 </span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;  &quot;SRMR&quot;</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   CFI  SRMR </span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  TRUE FALSE </span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="fu">fitmeasures</span>(res, <span class="at">fit.measures =</span> <span class="fu">c</span>(<span class="st">&quot;cfi&quot;</span>, <span class="st">&quot;srmr&quot;</span>)) <span class="sc">-</span> <span class="fu">fitmeasures</span>(<span class="fu">cfa</span>(<span class="at">model =</span> mod.con, <span class="at">data =</span> bb1992), <span class="at">fit.measures =</span> <span class="fu">c</span>(<span class="st">&quot;cfi&quot;</span>, <span class="st">&quot;srmr&quot;</span>))</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    cfi   srmr </span></span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.011 -0.037</span></span></code></pre></div>
+<p>Since the correlation between both factors was only .36, it is likely that the models show a comparable fit. Indeed, the flexible cutoffs are slightly worsened in the constrained model 2 (CFI = .956, SRMR = .055) compared to model 1 (CFI = .971, SRMR = .035), yielding a small difference (delta CFI = .014, delta SRMR = -.020). Consider that this difference is larger than the present difference of CFI between the models (.011) and smaller than present difference of SRMR between the models (-.037). That is, CFI was - as expected - less sensitive to the constraint than SRMR. Put simply, flexible cutoffs suggest that the change in fit by CFI is acceptable (flexible cutoff: .014 &gt; present difference: 0.11), but the change in fit by SRMR is not (flexible cutoff: -.020 &gt; present difference: -.037). We should reject the alternative model of orthogonal factors F1 and F2. Fixed cutoffs (CFI ≥ .95, SRMR ≤ .09) would still have accepted the alternative model. Please note that guidelines for relative fit comparisons in a contingent way - accounting for model size and sample size - are rare to find (e.g., Meade et al. 2008 for measurement invariance). Future investigations of the performance of flexible cutoffs for relative fit comparisons might be interesting.</p>
+<p>As a technical side note, the flexible cutoffs here are slightly different from the ones described in chapter “Basic usage” since the <code>type</code> argument is automatically switched to “EM” (<code>type = &quot;EM&quot;</code>) when two models are provided. When single cutoffs would be generated with this setting, the same flexible cutoffs would be found.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fits.proof <span class="ot">&lt;-</span> <span class="fu">gen_fit</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mod1 =</span> mod,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> bb1992,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">rep =</span> <span class="dv">100</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;EM&quot;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(<span class="at">fits =</span> fits.proof,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">index =</span> <span class="fu">c</span>(<span class="st">&quot;CFI&quot;</span>, <span class="st">&quot;SRMR&quot;</span>),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha.lev =</span> .<span class="dv">05</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.proof, index = c(&quot;CFI&quot;, &quot;SRMR&quot;), alpha.lev =</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.05): The number of replications is lower than the recommended minimum of 500.</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Consider with care.</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        CFI       SRMR </span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.97092052 0.03468864 </span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;  &quot;SRMR&quot;</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   CFI  SRMR </span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  TRUE FALSE </span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span></code></pre></div>
+</div>
+<div id="discriminant-validity-testing" class="section level2">
+<h2>Discriminant validity testing</h2>
+<p>A special application of flexible cutoffs could be its ability to test <strong>discriminant validity</strong>. As Rönkkö &amp; Cho (2020) highlighted, CBSEM could be useful to compare CFAs where a second alternative model merges, hereafter “<strong>merging</strong>”, two factors subject to an issue in discriminant validity (given a substantially high correlation between the factors). Alternatively, it is possible to compare an unconstrained model with a constrained model, where the correlation between the factors is set to a cutoff value (e.g., .9). We refer to this second principle as “<strong>constraining</strong>”. Instead of testing the chi-square difference between the original and the alternative model, flexible cutoffs for fit indicators might work equally well or even better, given the issues with the chi-square statistic (e.g., Niemand &amp; Mai 2018).</p>
+<p>Consider that in the example data, factors F4 and F5 are highly correlated (.831), possibly indicating an issue in discriminant validity. To investigate this, we can use the discriminant validity-related arguments of the <code>gen_fit</code> function, termed <code>dv</code>, <code>dv.factors</code>, <code>merge.mod</code>, and <code>dv.cutoff</code>. Argument <code>dv</code> simply tells the function to expect the application of discriminant validity testing. Argument <code>dv.factors</code> provides the factors that should be investigated, in this case F4 and F5. If this argument is missing, it is assumed that the first and second factor of the model should be investigated (F1 &amp; F2). Hence, one should provide the names of the factors if that is not the case. Argument <code>merge.mod</code> is needed if <strong>merging</strong> should be applied. This argument calls an internal function that takes the original model, changes all indicators of the second factor (F5) specified under <code>dv.factors</code> to be indicators of the first factor (F4), and omits the second factor from estimation. Please note that it does not matter which factor is first or second, as both are merged anyway. Finally, <code>dv.cutoff</code> is required when one wants to apply <strong>constraining</strong>. The value for this cutoff can be between 0 and 1, but a warning is given if it is lower than .8, as this is generally accepted as the lower border of a discriminant validity issue (Rönkkö &amp; Cho 2020, p. 30). Some guessing work is implemented here to make the arguments more convenient. For example, if one forgot the argument <code>dv</code> but sets <code>merge.mod = TRUE</code>, merging is still assumed. To make sure the user knows which approach is used, a message indicating the discriminant validity testing approach is returned.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(<span class="fu">parameterestimates</span>(res, <span class="at">standardized =</span> <span class="cn">TRUE</span>), lhs <span class="sc">==</span> <span class="st">&quot;F4&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>         rhs <span class="sc">==</span> <span class="st">&quot;F5&quot;</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    lhs op rhs   est    se     z pvalue ci.lower ci.upper std.lv std.all std.nox</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 55  F4 ~~  F5 0.398 0.042 9.417      0    0.316    0.481  0.831   0.831   0.831</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>fits.dv.con <span class="ot">&lt;-</span> <span class="fu">gen_fit</span>(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">mod1 =</span> mod,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> bb1992,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">rep =</span> <span class="dv">100</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">dv =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">dv.factors =</span> <span class="fu">c</span>(<span class="st">&quot;F4&quot;</span>, <span class="st">&quot;F5&quot;</span>),</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">dv.cutoff =</span> .<span class="dv">9</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Constraining is selected as the discriminant validity testing option given the provided arguments.</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>fits.dv.merge <span class="ot">&lt;-</span> <span class="fu">gen_fit</span>(</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">mod1 =</span> mod,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> bb1992,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">rep =</span> <span class="dv">100</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">dv =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">dv.factors =</span> <span class="fu">c</span>(<span class="st">&quot;F4&quot;</span>, <span class="st">&quot;F5&quot;</span>),</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">merge.mod =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Merging is selected as the discriminant validity testing option given the provided arguments.</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(<span class="at">fits =</span> fits.dv.con,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">index =</span> <span class="st">&quot;CFI&quot;</span>,</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha.lev =</span> .<span class="dv">05</span>)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.dv.con, index = &quot;CFI&quot;, alpha.lev = 0.05): The</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; number of replications is lower than the recommended minimum of 500. Consider</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; with care.</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               CFI</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 1 0.9709205</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 2 0.9684139</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $difference</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.002506666</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;</span></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  CFI </span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TRUE </span></span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a><span class="fu">flex_co</span>(<span class="at">fits =</span> fits.dv.merge,</span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>        <span class="at">index =</span> <span class="st">&quot;CFI&quot;</span>,</span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha.lev =</span> .<span class="dv">05</span>)</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in flex_co(fits = fits.dv.merge, index = &quot;CFI&quot;, alpha.lev = 0.05): The</span></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; number of replications is lower than the recommended minimum of 500. Consider</span></span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; with care.</span></span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoff</span></span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               CFI</span></span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 1 0.9709205</span></span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Model 2 0.9317750</span></span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $difference</span></span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.03914548</span></span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $index</span></span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;CFI&quot;</span></span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $alpha</span></span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.05</span></span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gof</span></span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  CFI </span></span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TRUE </span></span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`number of non-converging models`</span></span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $`share of non-converging models`</span></span>
+<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
+<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a>mod.dv.con <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a><span class="st">F1 =~ Q5 + Q7 + Q8</span></span>
+<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a><span class="st">F2 =~ Q2 + Q4</span></span>
+<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a><span class="st">F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22</span></span>
+<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a><span class="st">F4 =~ Q1 + Q17</span></span>
+<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a><span class="st">F5 =~ Q6 + Q14 + Q15 + Q16</span></span>
+<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a><span class="st">F4 ~~ .9 * F5</span></span>
+<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a><span class="fu">fitmeasures</span>(</span>
+<span id="cb20-98"><a href="#cb20-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cfa</span>(</span>
+<span id="cb20-99"><a href="#cb20-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> mod.dv.con,</span>
+<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> bb1992,</span>
+<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a>    <span class="at">auto.fix.first =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb20-102"><a href="#cb20-102" aria-hidden="true" tabindex="-1"></a>    <span class="at">std.lv =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-103"><a href="#cb20-103" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb20-104"><a href="#cb20-104" aria-hidden="true" tabindex="-1"></a>  <span class="at">fit.measures =</span> <span class="st">&quot;cfi&quot;</span></span>
+<span id="cb20-105"><a href="#cb20-105" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-106"><a href="#cb20-106" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   cfi </span></span>
+<span id="cb20-107"><a href="#cb20-107" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.959</span></span>
+<span id="cb20-108"><a href="#cb20-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-109"><a href="#cb20-109" aria-hidden="true" tabindex="-1"></a>mod.dv.merge <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb20-110"><a href="#cb20-110" aria-hidden="true" tabindex="-1"></a><span class="st">F1 =~ Q5 + Q7 + Q8</span></span>
+<span id="cb20-111"><a href="#cb20-111" aria-hidden="true" tabindex="-1"></a><span class="st">F2 =~ Q2 + Q4</span></span>
+<span id="cb20-112"><a href="#cb20-112" aria-hidden="true" tabindex="-1"></a><span class="st">F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22</span></span>
+<span id="cb20-113"><a href="#cb20-113" aria-hidden="true" tabindex="-1"></a><span class="st">F4 =~ Q1 + Q17 + Q6 + Q14 + Q15 + Q16</span></span>
+<span id="cb20-114"><a href="#cb20-114" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb20-115"><a href="#cb20-115" aria-hidden="true" tabindex="-1"></a><span class="fu">fitmeasures</span>(</span>
+<span id="cb20-116"><a href="#cb20-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cfa</span>(</span>
+<span id="cb20-117"><a href="#cb20-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">model =</span> mod.dv.merge,</span>
+<span id="cb20-118"><a href="#cb20-118" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> bb1992</span>
+<span id="cb20-119"><a href="#cb20-119" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb20-120"><a href="#cb20-120" aria-hidden="true" tabindex="-1"></a>  <span class="at">fit.measures =</span> <span class="st">&quot;cfi&quot;</span></span>
+<span id="cb20-121"><a href="#cb20-121" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-122"><a href="#cb20-122" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   cfi </span></span>
+<span id="cb20-123"><a href="#cb20-123" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.952</span></span></code></pre></div>
+<p>In this example, we asked for discriminant validity testing (<code>dv = TRUE</code>) and ran constraining first, constraining the correlation between the provided factors (<code>dv.factors = c(&quot;F4&quot;, &quot;F5&quot;)</code>) to the cutoff of .9 (<code>dv.cutoff = .9</code>). Second, we ran merging, this time telling the function to merge both selected factors (<code>merge.mod = TRUE</code>).</p>
+<p>Similar to the relative fit comparison case, the function returns tables for each replication, which then can be handled by the <code>flex_co</code> function. There are multiple options for how to assess discriminant validity subject to further investigations. As a <strong>simple test</strong>, we apply the following logic here (essentially a variant of a chi-squared difference test only with CFI): If two factors are clearly discriminant, their correlation is low, yielding a worse fit for the <strong>constrained</strong> or <strong>merged</strong> model compared to the <strong>original</strong> (unconstrained, not merged) model. This implies that the a GoF index, such as CFI, is smaller than the cutoff of the correct model (e.g., .75 &lt; .95). In contrast, a BoF index, such as SRMR, would indicate discriminant validity if it is larger than the respective cutoff of the correct model (e.g., .15 &gt; .05). In this example, the CFI for constraining is .959, while cutoffs for the correct model (model 1) are .971. In a nutshell, the CFI of the constrained model is out of the range of simulated CFIs for correct models (in this case, outside of 95% of all CFIs simulated). For merging, the same picture is found. CFI is .952, which is well below the cutoff of .971. Multiple other options are plausible, but we leave the point here.</p>
+<p>Since the code to obtain these values is rather extensive and hence to make user’s work easier, we provide a recommendation function <code>recommend_dv</code> that incorporates the previously described considerations. As with the <code>recommend</code> function for single fit indicators, it requires a result from <code>gen_fit</code> with appropriate arguments and, optionally, names of the fit indices (CFI is used if not provided). Results are rounded to 3 digits, but can be changed to 1 to 5 digits if needed, for example by <code>digits = 5.</code></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recommend_dv</span>(fits.dv.con)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in recommend_dv(fits.dv.con): The number of replications is lower than</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; the recommended minimum of 500. Consider with care.</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoffs</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CFI       model alpha</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.960    original 0.001</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.961 constrained 0.001</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.963    original 0.010</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.962 constrained 0.010</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.971    original 0.050</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 0.968 constrained 0.050</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 0.976    original 0.100</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 0.975 constrained 0.100</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $fit.values</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CFI       model</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.960    original</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.959 constrained</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $differences</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                CFI</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 0.000</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  0.001</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05  0.003</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1   0.001</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; fit          0.001</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $decisions</span></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    CFI</span></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 confirmed</span></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  confirmed</span></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05  confirmed</span></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1   confirmed</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Approach for discriminant validity testing: constraining. Discriminant validity is confirmed if the fit value from the constrained/merged model is smaller (GoF) / larger (BoF) than the respective cutoff of original model.&quot;</span></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a><span class="fu">recommend_dv</span>(fits.dv.merge)</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in recommend_dv(fits.dv.merge): The number of replications is lower than</span></span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; the recommended minimum of 500. Consider with care.</span></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $cutoffs</span></span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CFI    model alpha</span></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.960 original 0.001</span></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.911   merged 0.001</span></span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.963 original 0.010</span></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.916   merged 0.010</span></span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 0.971 original 0.050</span></span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 0.932   merged 0.050</span></span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 0.976 original 0.100</span></span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 0.934   merged 0.100</span></span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $fit.values</span></span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CFI    model</span></span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.960 original</span></span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.952   merged</span></span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $differences</span></span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                CFI</span></span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 0.050</span></span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  0.047</span></span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05  0.039</span></span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1   0.042</span></span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; fit          0.008</span></span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $decisions</span></span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    CFI</span></span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.001 confirmed</span></span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.01  confirmed</span></span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.05  confirmed</span></span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cutoff 0.1   confirmed</span></span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $replications</span></span>
+<span id="cb21-75"><a href="#cb21-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100</span></span>
+<span id="cb21-76"><a href="#cb21-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb21-77"><a href="#cb21-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $comment</span></span>
+<span id="cb21-78"><a href="#cb21-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Approach for discriminant validity testing: merging. Discriminant validity is confirmed if the fit value from the constrained/merged model is smaller (GoF) / larger (BoF) than the respective cutoff of original model.&quot;</span></span></code></pre></div>
+<p>The function returns the cutoffs for different levels of alpha and the two models, where the first model is the original model and the second model is termed constrained or merged based on the approach selected in the simulation. Further, the actual fit values are automatically provided. Hence, the constrained or merged model does not needed to be defined explicitly. Differences and decisions based on the different alpha values are provided as well. Finally, the number of replications as well as a comment highlighting the approach and an interpretation of the decision basis (the simple test) are given. Please note that the decisions are identical to the ones made by Rönkkö &amp; Cho’s tool in <code>semTools::discriminantValidity</code>.</p>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Babakus, E., &amp; Boller, G. W. (1992). An empirical assessment of the SERVQUAL scale. Journal of Business Research, 24(3), 253–268.</p>
+<p>Hu, L., &amp; Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55.</p>
+<p>Mai, R., Niemand, T., &amp; Kraus, S. (2021). A Tailor-Fit Model Evaluation Strategy for Better Decisions about Structural Equation Models, Technological Forecasting &amp; Social Change (forthcoming).</p>
+<p>Meade, A. W., Johnson, E. C., &amp; Braddy, P. W. (2008). Power and sensitivity of alternative fit indices in tests of measurement invariance. <em>Journal of Applied Psychology</em>, 93(3), 568-592.</p>
+<p>Niemand, T. &amp; Mai, R. (2018): Flexible Cutoff Values for Fit Indices in the Evaluation of Structural Equation Models. Journal of the Academy of Marketing Science, 46(6), 1148-1172.</p>
+<p>Rönkkö, M., &amp; Cho, E. (2020). An updated guideline for assessing discriminant validity. Organizational Research Methods. doi: 10.1177/1094428120968614.<br />
+</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

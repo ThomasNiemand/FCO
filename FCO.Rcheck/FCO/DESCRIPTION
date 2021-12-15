@@ -1,0 +1,25 @@
+Package: FCO
+Title: Flexible Cutoffs for Model Fit Evaluation in Covariance-Based
+        Structural Models
+Version: 0.69
+Authors@R: 
+    person(given = "Thomas",
+           family = "Niemand",
+           role = c("aut", "cre"),
+           email = "thomas.niemand@gmail.com",
+           comment = c(ORCID = "0000-0001-7677-1168"))
+Description: A toolbox to derive flexible cutoffs for fit indices in Covariance-based Structural Equation Modeling based on the paper by Niemand & Mai (2018). Flexible cutoffs are an alternative to fixed cutoffs - rules-of-thumb - regarding an appropriate cutoff for fit indices such as CFI or SRMR. It has been demonstrated that these flexible cutoffs perform better than fixed cutoffs in grey areas where misspecification is not easy to detect. The package provides an alternative to the tool at flexiblecutoffs.org as it allows to tailor flexible cutoffs to a given dataset and model, which is so far not available in the tool. The package simulates fit indices based on a given dataset and model and then estimates the flexible cutoffs. Some useful functions, e.g., to determine the GoF or BoF-nature of a fit index, are provided. So far, additional options for a relative use (is a model better than another?) are provided in an explorative manner.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: lavaan, semTools, parallel, checkmate, data.table
+Suggests: rmarkdown, knitr, ggplot2, MASS
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2021-12-15 12:16:13 UTC; thomasniemand
+Author: Thomas Niemand [aut, cre] (<https://orcid.org/0000-0001-7677-1168>)
+Maintainer: Thomas Niemand <thomas.niemand@gmail.com>
+Depends: R (>= 3.5.0)
+Built: R 4.1.2; ; 2021-12-15 12:16:16 UTC; unix

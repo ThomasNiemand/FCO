@@ -1,0 +1,11 @@
+bb1992                  Dataset from Babakus & Boller (1992)
+flex_co                 Obtain flexible cutoffs for one or two models
+gen_fit                 Obtain fit statistics from one or two models
+index_guess             Helper function that guesses GoF or BoF from a
+                        given index name
+pop_mod                 Helper function to obtain population model for
+                        simulation based on data and model
+recommend               Obtain recommendations based on Mai et al.
+                        (2021)
+recommend_dv            Obtain recommendations for discriminant
+                        validity testing
