@@ -51,6 +51,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
+#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 #A single model to obtain fit indices for
 mod <- "
 F1 =~ Q5 + Q7 + Q8
@@ -59,7 +60,7 @@ F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22
 F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100, standardized = FALSE)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 flex_co(fits = fits.single, index = c("CFI", "SRMR"))
 #Two models, an unconstrained and a constrained model to compare fit indices
 mod.con <- "
@@ -74,7 +75,7 @@ fits.con <- gen_fit(
  mod1 = mod,
  mod2 = mod.con,
  x = bb1992,
- rep = 100
+ rep = 10
 )
 flex_co(fits = fits.con,
        index = c("CFI", "SRMR"),
@@ -84,7 +85,7 @@ flex_co(fits = fits.con,
 fits.dv.con <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
  dv.cutoff = .9
@@ -113,11 +114,11 @@ lavaan::fitmeasures(
 fits.dv.merge <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
- merge.mod = TRUE
-)
+ merge.mod = TRUE)
+
 flex_co(fits = fits.dv.merge,
 index = "CFI",
 alpha.lev = .05)
@@ -152,7 +153,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-
+#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 #A single model to obtain fit indices for
 mod <- "
 F1 =~ Q5 + Q7 + Q8
@@ -161,7 +162,7 @@ F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22
 F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100, standardized = FALSE)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 
 #Two models, an unconstrained and a constrained model to compare fit indices
 mod.con <- "
@@ -176,13 +177,13 @@ fits.con <- gen_fit(
  mod1 = mod,
  mod2 = mod.con,
  x = bb1992,
- rep = 100
+ rep = 10
 )
 #Two models for discriminant validity testing, this resembles constraining with a cutoff of .9
 fits.dv.con <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
  dv.cutoff = .9
@@ -192,7 +193,7 @@ fits.dv.con <- gen_fit(
 fits.dv.merge <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
  merge.mod = TRUE
@@ -273,6 +274,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
+#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 mod <- "
 F1 =~ Q5 + Q7 + Q8
 F2 =~ Q2 + Q4
@@ -280,7 +282,7 @@ F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22
 F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100, standardized = FALSE)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 recommend(fits.single)
 recommend(fits.single, purpose = "established")
 recommend(fits.single,
@@ -304,6 +306,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
+#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 mod <- "
 F1 =~ Q5 + Q7 + Q8
 F2 =~ Q2 + Q4
@@ -315,7 +318,7 @@ F5 =~ Q6 + Q14 + Q15 + Q16
 fits.dv.con <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
  dv.cutoff = .9
@@ -325,7 +328,7 @@ recommend_dv(fits.dv.con)
 fits.dv.merge <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
  merge.mod = TRUE

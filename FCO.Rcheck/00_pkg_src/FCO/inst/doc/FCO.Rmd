@@ -96,16 +96,18 @@ fitmeasures(res, fit.measures = c("CFI", "SRMR"))
 
 Note that both values would suffice fixed cutoffs such as CFI ≥ .95 and SRMR ≤ .09, hence concluding that the model fits the data well. However, given the empirical setting of the example study, it would be beneficial to investigate the uncertainty of this finding. This is where flexible cutoffs come into play.
 
-To derive the flexible cutoffs, one only needs the two objects discussed before. All other arguments are set internally via standard options (see below). In this case, we however only use 100 replications to speed up the derivation. The function `gen_fit` generates a list `fits.single` of fit indicators for the underlying data and model, as well as lists for the other arguments. The function `flex_co` then takes this list and estimates the intended flexible cutoffs for the selected fit indices. Since the default setting for the preset uncertainty is .05, we can also omit this argument. For now, this code is sufficient:
+To derive the flexible cutoffs, one only needs the two objects discussed before. All other arguments are set internally via standard options (see below). In this case, we however only use 10 replications, to speed up the derivation. The function `gen_fit` generates a list `fits.single` of fit indicators for the underlying data and model, as well as lists for the other arguments. The function `flex_co` then takes this list and estimates the intended flexible cutoffs for the selected fit indices. Since the default setting for the preset uncertainty is .05, we can also omit this argument. For now, this code is sufficient:
 
 ```{r generating cutoffs}
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
+#Please use for flexible cutoffs as desribed below:
+#fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100) 
 flex_co(fits = fits.single, index = c("CFI", "SRMR"))
 ```
 
 In this case, the second function returns a warning that the number of replications is below the recommended minimum. For non-illustrative purposes, we recommend higher values (e.g., 500 or 1,000). The function `flex_co` also returns objects `cutoff`, `index`, `alpha`, `gof`, `replications`, `number of non-converging models` and `share of non-converging models`. `Cutoff` provides the flexible cutoff values for the selected indices. `Index` returns the name of the indices selected and alpha returns the preset uncertainty. `Gof` returns the type of fit index (GoF or BoF, logically, GoF = FALSE indicates BoF). This can be either stated manually in the function with the argument `gof` or is guessed by the helper function `index_guess`, which works for all established fit indices.
 
-Note that the cutoff values for CFI and SRMR are higher (CFI = .971) and lower (SRMR = .036) than the respective empirical values (CFI = .960, SRMR = .038). That is, given the uncertainty of .05, as well as the present model and data, the cutoffs are close to the empirical values, but the model is marginally rejected. We can however simulate what happens if we assume less (.001) or more (.10) uncertainty.
+Note that the cutoff values for CFI and SRMR are higher (CFI = .971 for 100 replications) and lower (SRMR = .036 for 100 replications) than the respective empirical values (CFI = .960, SRMR = .038). That is, given the uncertainty of .05, as well as the present model and data, the cutoffs are close to the empirical values, but the model is marginally rejected. We can however simulate what happens if we assume less (.001) or more (.10) uncertainty.
 
 ```{r alternative alphas}
 flex_co(fits = fits.single,
@@ -116,7 +118,7 @@ flex_co(fits = fits.single,
         alpha.lev = .10)
 ```
 
-We do not need to re-simulate the flexible cutoffs, as the function `flex_co` takes the simulated values from the generated fit indices and we only need to change the uncertainty via the `alpha.lev` argument. As expected, if one assumes less uncertainty---or more certainty, for example because the model has been tested before---the flexible cutoffs are closer (CFI = .962, SRMR = .040) to the empirical values. Likewise, when assuming more uncertainty (e.g., a novel model), the cutoffs more clearly reject the model.
+We do not need to re-simulate the flexible cutoffs, as the function `flex_co` takes the simulated values from the generated fit indices and we only need to change the uncertainty via the `alpha.lev` argument. As expected, if one assumes less uncertainty---or more certainty, for example because the model has been tested before---the flexible cutoffs tend to be closer to the empirical values for more replications. Likewise, when assuming more uncertainty (e.g., a novel model), the cutoffs more clearly reject the model.
 
 In principle, this is the core usage originally intended for flexible cutoffs. We however included a substantial number of other features that may be interesting for users. The following chapter gives an overview of the possible features.
 
@@ -179,49 +181,12 @@ flex_co(
 
 The first version (the `gof` argument can also be omitted as the guess is correct) gives the correct flexible cutoffs, the second version does not, as CFI is not a BoF and SRMR is not a GoF. Hence, users should be careful with specifying this argument. For novel fit indices or alternative uses, it may however be beneficial to maintain this argument.
 
-## Visualizing the distribution of simulated fit indices
-
-For a better understanding, we can plot the empirical values and cutoffs by taking values from the list generated by `gen_fit`. To obtain a better distribution, the replications are increased to 1,000 before plotting the distribution, density, and the cutoffs (.05: red, solid; .01: yellow, dashed; .001: green, dotted). Since all fit indices are stored in the `gen_fit` list object, this can easily be applied to other fit indices by changing the name "srmr" in the internal function `function(x) unname(x[c("srmr")]))`
-
-```{r visual srmr}
-fits.1000 <- gen_fit(mod1 = mod, x = bb1992, rep = 1000)
-srmr <- sapply(fits.1000$fco, function(x) unname(x[c("srmr")]))
-#Note that SRMR is a gof, so we look for the right side
-qu <- quantile(srmr, probs = 1 - c(.001, .01, .05, .100), type = 8)
-print(qu)
-
-ggplot(data.frame(srmr), aes(x = srmr)) +
-  geom_histogram() +
-  scale_color_grey() +
-  theme_classic() +
-  theme(legend.position = "none") +
-  geom_density(alpha = .2, fill = "blue") +
-  geom_vline(
-    xintercept = qu[1],
-    linetype = "dotted",
-    color = "darkgreen",
-    size = 1.0
-  ) +
-  geom_vline(
-    xintercept = qu[2],
-    linetype = "dashed",
-    color = "orange",
-    size = 1.0
-  ) +
-  geom_vline(
-    xintercept = qu[3],
-    linetype = "solid",
-    color = "red",
-    size = 1.0
-  )
-```
-
 ## Multi-core support
 
 Since simulations may need some time, we implemented multi-core support. Depending on the system the package runs on, function `gen_fit` uses `mclapply` (on Linux or Mac) and `parLapply` (on Windows) from package **parallel**. The default is set to TRUE and two cores.
 
 ```{r equals two cores}
-system.time(gen_fit(mod1 = mod, x = bb1992, rep = 100))
+system.time(gen_fit(mod1 = mod, x = bb1992, rep = 10))
 ```
 
 In the fortunate situation that a user has more cores, more cores can be set by the argument cores. However, note that the function returns an error if the number of available cores of the system is lower than the number of cores provided by the `cores` argument (e.g., `cores = 4`). Of course, multi-core support can be switched off by setting the argument `multi.core = FALSE`.
@@ -230,7 +195,7 @@ In the fortunate situation that a user has more cores, more cores can be set by 
 system.time(gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   multi.core = FALSE
 ))
 ```
@@ -253,7 +218,7 @@ SRMR is recommended due to the purpose, focus, and sample size (n = 502) in line
 
 Additionally, the function provides a sensitivity analysis for different values of uncertainty, .001 (.1 percent), .01 (1 percent), .05 (5 percent) and .10 (10 percent) and makes a decision given the cutoff. For completeness, replications, the number of non-converging models, and their share are also provided.
 
-The result found here demonstrates the consequences of uncertainty for the decision. When one is very conservative and assumes a high Type I error (.10), the cutoff (.036) is lower than the actual value (.038) and hence the present model should be rejected. When one is very lenient and feels safe with the model (.001), the cutoff (.040) is higher than the actual value and hence the model can be confirmed.
+The result found here demonstrates the consequences of uncertainty for the decision. When one is very conservative and assumes a high Type I error (.10), the cutoff (.036 for 100 replications) is lower than the actual value (.038) and hence the present model should be rejected. When one is very lenient and feels safe with the model (.001), the cutoff (.040 for 100 replications) is higher than the actual value and hence the model can be confirmed.
 
 Let us assume for a moment that Babakus and Boller had not been as exploratory as they were and simply looked for confirmation of an established measurement model. So, we change the purpose argument to established.
 
@@ -261,7 +226,7 @@ Let us assume for a moment that Babakus and Boller had not been as exploratory a
 recommend(fits.single, purpose = "established")
 ```
 
-Now the recommendation changes to CFI with a fixed cutoff. Consequently, no uncertainty is provided (as they are fixed) and the recommendation is to confirm the model because the actual value (.960) is above the fixed cutoff of .95. This demonstrates two things. First, the recommend function also recommends fixed cutoffs when it is acceptable to do so (see Mai et al. 2021). Second, it shows what happens when assuming established models (and hence a low importance of Type II error): Type I errors become more important. Compare this with the lenient uncertainty before (.001), from the first recommendation, where SRMR also confirms the model. In other words, we feigned to be very certain by assuming the model to be an established model (ignoring the doubts) and hence got a very determined answer.
+Now the recommendation changes to CFI with a fixed cutoff. Consequently, no uncertainty is provided (as they are fixed) and the recommendation is to confirm the model because the actual value (.960) is above the fixed cutoff of .95. This demonstrates two things. First, the recommend function also recommends fixed cutoffs when it is acceptable to do so (see Mai et al. 2021). Second, it shows what happens when assuming established models (and hence a low importance of Type II error): Type I errors become more important. Compare this with the lenient uncertainty before (.001, i.e., .040 for 100 replications), from the first recommendation, where SRMR also confirms the model. In other words, we feigned to be very certain by assuming the model to be an established model (ignoring the doubts) and hence got a very determined answer.
 
 Finally, for exploratory investigations, one can also override the recommendations programmed into the function by using the `override` argument. This however requires users to provide one or more indices with the argument `index` (otherwise, an error is returned).
 
@@ -271,7 +236,7 @@ recommend(fits.single,
           index = c("CFI", "SRMR"))
 ```
 
-In the example, we provide CFI and SRMR and get the appropriate recommendations for them. Unsurprisingly, the recommendations do not change much (SRMR is confirmed for levels of .001 and .01 uncertainty, otherwise the model is rejected). Please note that purpose and focus are without function in this case, as the recommendations by Mai et al. (2021) are overridden.
+In the example, we provide CFI and SRMR and get the appropriate recommendations for them. Unsurprisingly, the recommendations do not change much (SRMR is confirmed for levels of .001 and .01 uncertainty for 100 replications, otherwise the model is rejected). Please note that purpose and focus are without function in this case, as the recommendations by Mai et al. (2021) are overridden.
 
 # Further applications
 
@@ -296,7 +261,7 @@ fits.con <- gen_fit(
   mod1 = mod,
   mod2 = mod.con,
   x = bb1992,
-  rep = 100
+  rep = 10
 )
 flex_co(fits = fits.con,
         index = c("CFI", "SRMR"),
@@ -304,7 +269,7 @@ flex_co(fits = fits.con,
 fitmeasures(res, fit.measures = c("cfi", "srmr")) - fitmeasures(cfa(model = mod.con, data = bb1992), fit.measures = c("cfi", "srmr"))
 ```
 
-Since the correlation between both factors was only .36, it is likely that the models show a comparable fit. Indeed, the flexible cutoffs are slightly worsened in the constrained model 2 (CFI = .956, SRMR = .055) compared to model 1 (CFI = .971, SRMR = .035), yielding a small difference (delta CFI = .014, delta SRMR = -.020). Consider that this difference is larger than the present difference of CFI between the models (.011) and smaller than present difference of SRMR between the models (-.037). That is, CFI was - as expected - less sensitive to the constraint than SRMR. Put simply, flexible cutoffs suggest that the change in fit by CFI is acceptable (flexible cutoff: .014 \> present difference: 0.11), but the change in fit by SRMR is not (flexible cutoff: -.020 \> present difference: -.037). We should reject the alternative model of orthogonal factors F1 and F2. Fixed cutoffs (CFI ≥ .95, SRMR ≤ .09) would still have accepted the alternative model. Please note that guidelines for relative fit comparisons in a contingent way - accounting for model size and sample size - are rare to find (e.g., Meade et al. 2008 for measurement invariance). Future investigations of the performance of flexible cutoffs for relative fit comparisons might be interesting.
+Since the correlation between both factors was only .36, it is likely that the models show a comparable fit. Indeed, the flexible cutoffs are slightly worsened in the constrained model 2 (CFI = .956, SRMR = .056) compared to model 1 (CFI = .969, SRMR = .035), yielding a small difference (delta CFI = .012, delta SRMR = -.022). Consider that this difference is larger than the present difference of CFI between the models (.011) and smaller than present difference of SRMR between the models (-.037). That is, CFI was - as expected - less sensitive to the constraint than SRMR. Put simply, flexible cutoffs suggest that the change in fit by CFI is acceptable (flexible cutoff: .012 \> present difference: .011), but the change in fit by SRMR is not (flexible cutoff: -.020 \> present difference: -.037). We should reject the alternative model of orthogonal factors F1 and F2. Fixed cutoffs (CFI ≥ .95, SRMR ≤ .09) would still have accepted the alternative model. Please note that guidelines for relative fit comparisons in a contingent way - accounting for model size and sample size - are rare to find (e.g., Meade et al. 2008 for measurement invariance). Future investigations of the performance of flexible cutoffs for relative fit comparisons might be interesting.
 
 As a technical side note, the flexible cutoffs here are slightly different from the ones described in chapter "Basic usage" since the `type` argument is automatically switched to "EM" (`type = "EM"`) when two models are provided. When single cutoffs would be generated with this setting, the same flexible cutoffs would be found.
 
@@ -312,7 +277,7 @@ As a technical side note, the flexible cutoffs here are slightly different from 
 fits.proof <- gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   type = "EM"
 )
 flex_co(fits = fits.proof,
@@ -332,7 +297,7 @@ subset(parameterestimates(res, standardized = TRUE), lhs == "F4" &
 fits.dv.con <- gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   dv = TRUE,
   dv.factors = c("F4", "F5"),
   dv.cutoff = .9
@@ -340,7 +305,7 @@ fits.dv.con <- gen_fit(
 fits.dv.merge <- gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   dv = TRUE,
   dv.factors = c("F4", "F5"),
   merge.mod = TRUE
@@ -388,7 +353,7 @@ fitmeasures(
 
 In this example, we asked for discriminant validity testing (`dv = TRUE`) and ran constraining first, constraining the correlation between the provided factors (`dv.factors = c("F4", "F5")`) to the cutoff of .9 (`dv.cutoff = .9`). Second, we ran merging, this time telling the function to merge both selected factors (`merge.mod = TRUE`).
 
-Similar to the relative fit comparison case, the function returns tables for each replication, which then can be handled by the `flex_co` function. There are multiple options for how to assess discriminant validity subject to further investigations. As a **simple test**, we apply the following logic here (essentially a variant of a chi-squared difference test only with CFI): If two factors are clearly discriminant, their correlation is low, yielding a worse fit for the **constrained** or **merged** model compared to the **original** (unconstrained, not merged) model. This implies that the a GoF index, such as CFI, is smaller than the cutoff of the correct model (e.g., .75 \< .95). In contrast, a BoF index, such as SRMR, would indicate discriminant validity if it is larger than the respective cutoff of the correct model (e.g., .15 \> .05). In this example, the CFI for constraining is .959, while cutoffs for the correct model (model 1) are .971. In a nutshell, the CFI of the constrained model is out of the range of simulated CFIs for correct models (in this case, outside of 95% of all CFIs simulated). For merging, the same picture is found. CFI is .952, which is well below the cutoff of .971. Multiple other options are plausible, but we leave the point here.
+Similar to the relative fit comparison case, the function returns tables for each replication, which then can be handled by the `flex_co` function. There are multiple options for how to assess discriminant validity subject to further investigations. As a **simple test**, we apply the following logic here (essentially a variant of a chi-squared difference test only with CFI): If two factors are clearly discriminant, their correlation is low, yielding a worse fit for the **constrained** or **merged** model compared to the **original** (unconstrained, not merged) model. This implies that the a GoF index, such as CFI, is smaller than the cutoff of the correct model (e.g., .75 \< .95). In contrast, a BoF index, such as SRMR, would indicate discriminant validity if it is larger than the respective cutoff of the correct model (e.g., .15 \> .05). In this example, the CFI for constraining is .959, while cutoffs for the correct model (model 1) are .969. In a nutshell, the CFI of the constrained model is out of the range of simulated CFIs for correct models (in this case, outside of 95% of all CFIs simulated). For merging, the same picture is found. CFI is .952, which is well below the cutoff of .969. Multiple other options are plausible, but we leave the point here.
 
 Since the code to obtain these values is rather extensive and hence to make user's work easier, we provide a recommendation function `recommend_dv` that incorporates the previously described considerations. As with the `recommend` function for single fit indicators, it requires a result from `gen_fit` with appropriate arguments and, optionally, names of the fit indices (CFI is used if not provided). Results are rounded to 3 digits, but can be changed to 1 to 5 digits if needed, for example by `digits = 5.`
 
@@ -401,14 +366,14 @@ The function returns the cutoffs for different levels of alpha and the two model
 
 # References
 
-Babakus, E., & Boller, G. W. (1992). An empirical assessment of the SERVQUAL scale. Journal of Business Research, 24(3), 253--268.
+Babakus, E., & Boller, G. W. (1992). An empirical assessment of the SERVQUAL scale. Journal of Business Research, 24(3), 253--268. <https://doi.org/10.1016/0148-2963(92)90022-4>
 
-Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1--55.
+Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1--55. <https://doi.org/10.1080/10705519909540118>
 
-Mai, R., Niemand, T., & Kraus, S. (2021). A Tailor-Fit Model Evaluation Strategy for Better Decisions about Structural Equation Models, Technological Forecasting & Social Change (forthcoming).
+Mai, R., Niemand, T., & Kraus, S. (2021). A Tailor-Fit Model Evaluation Strategy for Better Decisions about Structural Equation Models. Technological Forecasting & Social Change, 173(December) 121142. <https://doi.org/10.1016/j.techfore.2021.121142>
 
-Meade, A. W., Johnson, E. C., & Braddy, P. W. (2008). Power and sensitivity of alternative fit indices in tests of measurement invariance. *Journal of Applied Psychology*, 93(3), 568-592.
+Meade, A. W., Johnson, E. C., & Braddy, P. W. (2008). Power and sensitivity of alternative fit indices in tests of measurement invariance. Journal of Applied Psychology, 93(3), 568-592. [\<https://doi.org/10.1037/0021-9010.93.3.568>](https://psycnet.apa.org/doi/10.1037/0021-9010.93.3.568)
 
-Niemand, T. & Mai, R. (2018): Flexible Cutoff Values for Fit Indices in the Evaluation of Structural Equation Models. Journal of the Academy of Marketing Science, 46(6), 1148-1172.
+Niemand, T., & Mai, R. (2018). Flexible cutoff values for fit indices in the evaluation of structural equation models. Journal of the Academy of Marketing Science, 46(6), 1148---1172. <https://doi.org/10.1007/s11747-018-0602-9>
 
-Rönkkö, M., & Cho, E. (2020). An updated guideline for assessing discriminant validity. Organizational Research Methods. doi: 10.1177/1094428120968614.\
+Rönkkö, M., & Cho, E. (2020). An updated guideline for assessing discriminant validity. Organizational Research Methods. <https://doi.org/10.1177/1094428120968614>\

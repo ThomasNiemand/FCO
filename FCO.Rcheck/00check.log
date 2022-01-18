@@ -1,10 +1,10 @@
-* using log directory ‘/Users/thomasniemand/Library/Mobile Documents/com~apple~CloudDocs/Publikationen/Freiheitsgradebeitrag/Cutoffs/Package FCO/FCO.Rcheck’
+* using log directory ‘/Users/thomasniemand/Library/Mobile Documents/com~apple~CloudDocs/Publikationen/Freiheitsgradebeitrag/Cutoffs/FCO/FCO.Rcheck’
 * using R version 4.1.2 (2021-11-01)
 * using platform: aarch64-apple-darwin20 (64-bit)
 * using session charset: UTF-8
 * using options ‘--no-manual --as-cran’
 * checking for file ‘FCO/DESCRIPTION’ ... OK
-* this is package ‘FCO’ version ‘0.69’
+* this is package ‘FCO’ version ‘0.7.0’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -55,11 +55,12 @@
 * checking files in ‘vignettes’ ... OK
 * checking examples ... OK
 Examples with CPU (user + system) or elapsed time > 5s
-               user system elapsed
-flex_co      68.151  1.690  35.441
-gen_fit      57.872  1.434  34.812
-recommend_dv 38.278  0.882  20.010
-recommend    10.780  0.315   5.750
+         user system elapsed
+flex_co 6.974  0.441   3.959
+gen_fit 4.886  0.322   3.697
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’ [55s/33s]
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in ‘inst/doc’ ... OK
 * checking re-building of vignette outputs ... OK

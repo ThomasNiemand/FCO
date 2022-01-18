@@ -32,7 +32,9 @@ res <- cfa(mod, data = bb1992)
 fitmeasures(res, fit.measures = c("CFI", "SRMR"))
 
 ## ----generating cutoffs-------------------------------------------------------
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
+#Please use for flexible cutoffs as desribed below:
+#fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100) 
 flex_co(fits = fits.single, index = c("CFI", "SRMR"))
 
 ## ----alternative alphas-------------------------------------------------------
@@ -72,46 +74,14 @@ flex_co(
   gof = c(FALSE, TRUE)
 )
 
-## ----visual srmr--------------------------------------------------------------
-fits.1000 <- gen_fit(mod1 = mod, x = bb1992, rep = 1000)
-srmr <- sapply(fits.1000$fco, function(x) unname(x[c("srmr")]))
-#Note that SRMR is a gof, so we look for the right side
-qu <- quantile(srmr, probs = 1 - c(.001, .01, .05, .100), type = 8)
-print(qu)
-
-ggplot(data.frame(srmr), aes(x = srmr)) +
-  geom_histogram() +
-  scale_color_grey() +
-  theme_classic() +
-  theme(legend.position = "none") +
-  geom_density(alpha = .2, fill = "blue") +
-  geom_vline(
-    xintercept = qu[1],
-    linetype = "dotted",
-    color = "darkgreen",
-    size = 1.0
-  ) +
-  geom_vline(
-    xintercept = qu[2],
-    linetype = "dashed",
-    color = "orange",
-    size = 1.0
-  ) +
-  geom_vline(
-    xintercept = qu[3],
-    linetype = "solid",
-    color = "red",
-    size = 1.0
-  )
-
 ## ----equals two cores---------------------------------------------------------
-system.time(gen_fit(mod1 = mod, x = bb1992, rep = 100))
+system.time(gen_fit(mod1 = mod, x = bb1992, rep = 10))
 
 ## ----multi.core switched off--------------------------------------------------
 system.time(gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   multi.core = FALSE
 ))
 
@@ -141,7 +111,7 @@ fits.con <- gen_fit(
   mod1 = mod,
   mod2 = mod.con,
   x = bb1992,
-  rep = 100
+  rep = 10
 )
 flex_co(fits = fits.con,
         index = c("CFI", "SRMR"),
@@ -152,7 +122,7 @@ fitmeasures(res, fit.measures = c("cfi", "srmr")) - fitmeasures(cfa(model = mod.
 fits.proof <- gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   type = "EM"
 )
 flex_co(fits = fits.proof,
@@ -165,7 +135,7 @@ subset(parameterestimates(res, standardized = TRUE), lhs == "F4" &
 fits.dv.con <- gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   dv = TRUE,
   dv.factors = c("F4", "F5"),
   dv.cutoff = .9
@@ -173,7 +143,7 @@ fits.dv.con <- gen_fit(
 fits.dv.merge <- gen_fit(
   mod1 = mod,
   x = bb1992,
-  rep = 100,
+  rep = 10,
   dv = TRUE,
   dv.factors = c("F4", "F5"),
   merge.mod = TRUE

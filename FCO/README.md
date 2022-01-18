@@ -5,12 +5,19 @@
 
 ## Changes in FCO
 
+### FCO 0.7.0
+
+-   Speed improvements in the vignette
+-   New naming scheme
+-   Minor revisions to the descriptions and references
+-   Added contributor
+
+------------------------------------------------------------------------
+
 ### FCO 0.69
 
 -   Bug fixes in gen_fit for OS compatibility
 -   Improvements in the vignette
-
-------------------------------------------------------------------------
 
 ### FCO 0.67
 
@@ -18,11 +25,11 @@
 
 ## Description
 
-The goal of FCO is to provide a toolbox to derive flexible cutoffs for
-fit indices in Covariance-based Structural Equation Modeling based on
-the paper by Niemand & Mai (2018). Flexible cutoffs are an alternative
-to fixed cutoffs - rules-of-thumb - regarding an appropriate cutoff for
-fit indices such as CFI or SRMR. It has been demonstrated that these
+The goal of FCO is to to derive flexible cutoffs for fit indices in
+Covariance-based Structural Equation Modeling based on the paper by
+Niemand & Mai (2018). Flexible cutoffs are an alternative to fixed
+cutoffs - rules-of-thumb - regarding an appropriate cutoff for fit
+indices such as CFI or SRMR. It has been demonstrated that these
 flexible cutoffs perform better than fixed cutoffs in grey areas where
 misspecification is not easy to detect. The package provides an
 alternative to the tool at flexiblecutoffs.org as it allows to tailor
@@ -62,20 +69,14 @@ F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
 
-#Empirical fit
-res <- cfa(mod, data = bb1992)
-fitmeasures(res, fit.measures = c("CFI", "SRMR"))
-#>   cfi  srmr 
-#> 0.960 0.038
-
 #Flexible cutoffs for this model
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
 flex_co(fits = fits.single, index = c("CFI", "SRMR"))
 #> Warning in flex_co(fits = fits.single, index = c("CFI", "SRMR")): The number of
 #> replications is lower than the recommended minimum of 500. Consider with care.
 #> $cutoff
-#>        CFI       SRMR 
-#> 0.97106269 0.03624088 
+#>       CFI      SRMR 
+#> 0.9691953 0.0356855 
 #> 
 #> $index
 #> [1] "CFI"  "SRMR"
@@ -88,7 +89,7 @@ flex_co(fits = fits.single, index = c("CFI", "SRMR"))
 #>  TRUE FALSE 
 #> 
 #> $replications
-#> [1] 100
+#> [1] 10
 #> 
 #> $`number of non-converging models`
 #> [1] 0
@@ -106,20 +107,20 @@ recommend(fits.single)
 #> 
 #> $cutoffs
 #>               SRMR
-#> cutoff 0.001 0.040
-#> cutoff 0.01  0.039
+#> cutoff 0.001 0.036
+#> cutoff 0.01  0.036
 #> cutoff 0.05  0.036
-#> cutoff 0.1   0.036
+#> cutoff 0.1   0.035
 #> 
 #> $decisions
-#>                   SRMR
-#> cutoff 0.001 confirmed
-#> cutoff 0.01  confirmed
-#> cutoff 0.05   rejected
-#> cutoff 0.1    rejected
+#>                  SRMR
+#> cutoff 0.001 rejected
+#> cutoff 0.01  rejected
+#> cutoff 0.05  rejected
+#> cutoff 0.1   rejected
 #> 
 #> $replications
-#> [1] 100
+#> [1] 10
 #> 
 #> $comment
 #> [1] "Recommendations based on flexible cutoffs and Mai et al. (2021)"

@@ -2,7 +2,6 @@
 #'
 #' @param x Vector of length (1:10) containing the loadings per factor
 #' @return Vector of factor loadings for popluation model
-#' @references Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55.
 #' @noRd
 hb_load <- function(x) {
   checkmate::assertInteger(

@@ -9,8 +9,9 @@
 #' @param index An optional vector of fit indices or measures provided by function fitmeasures in package lavaan. This argument is required when override is TRUE. It is ignored otherwise.
 #' @param digits An optional integer to round fit values and cutoffs (min: 1, max: 5).
 #' @return A list of information regarding the recommended fit indices based on Mai et al. (2021) or when overridden, based on the provided indices.
-#' @references Mai, R., Niemand, T., & Kraus, S. (2021). A Tailor-Fit Model Evaluation Strategy for Better Decisions about Structural Equation Models, Technological Forecasting & Social Change (forthcoming).
+#' @references Mai, R., Niemand, T., & Kraus, S. (2021). A Tailor-Fit Model Evaluation Strategy for Better Decisions about Structural Equation Models, Technological Forecasting & Social Change, 173(December) 121142. https://doi.org/10.1016/j.techfore.2021.121142
 #' @examples
+#'#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 #'mod <- "
 #'F1 =~ Q5 + Q7 + Q8
 #'F2 =~ Q2 + Q4
@@ -18,7 +19,7 @@
 #'F4 =~ Q1 + Q17
 #'F5 =~ Q6 + Q14 + Q15 + Q16
 #'"
-#'fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100, standardized = FALSE)
+#'fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 #'recommend(fits.single)
 #'recommend(fits.single, purpose = "established")
 #'recommend(fits.single,

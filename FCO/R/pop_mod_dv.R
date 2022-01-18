@@ -17,7 +17,7 @@ pop_mod_dv <-
     if (is.null(dv.factors))
       mf <- vars[c(1, 2)]
     if (any(is.na(mf)))
-      stop("At least one of the factors to be merged is not a factor in the model. Please revise.")
+      stop("At least one of the factors to be constrained is not a factor in the model. Please revise.")
     lhs <- grep(paste0(mf[2], "~~"), pms)
     rhs <- grep(paste0("*" , mf[1]), pms)
     #Maybe the order of factors is inversed in pms?
@@ -25,7 +25,7 @@ pop_mod_dv <-
       lhs2 <- grep(paste0(mf[1], "~~"), pms)
       rhs2 <- grep(paste0("*" , mf[2]), pms)
       if (any(lhs2 %in% rhs2)) {
-        cvr <- pms[rhs2[match(lhs2, rhs2)[1]]]
+        cvr <- pms[rhs2[stats::na.omit(match(lhs2, rhs2))]]
         cvr <-
           as.numeric(unlist(strsplit(gsub(
             ".*~~", "", cvr
@@ -40,7 +40,7 @@ pop_mod_dv <-
       }
     }
     if (any(lhs %in% rhs)) {
-      cvr <- pms[rhs[match(lhs, rhs)[1]]]
+      cvr <- pms[rhs[stats::na.omit(match(lhs, rhs))]]
       cvr <-
         as.numeric(unlist(strsplit(gsub(".*~~", "", cvr), "*", fixed = TRUE))[1])
       pop.mod2 <-

@@ -10,7 +10,8 @@
 #' If not provided or not equal to the number of fit indices, the function guesses the type for known fit indices (e.g., SRMR is a BoF).
 #' @return A list of information regarding the selected fit index providing its flexible cutoff for the given parameters.
 #' @examples
-#' #A single model to obtain fit indices for
+#'#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
+#'#A single model to obtain fit indices for
 #'mod <- "
 #'F1 =~ Q5 + Q7 + Q8
 #'F2 =~ Q2 + Q4
@@ -18,7 +19,7 @@
 #'F4 =~ Q1 + Q17
 #'F5 =~ Q6 + Q14 + Q15 + Q16
 #'"
-#'fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100, standardized = FALSE)
+#'fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 #'flex_co(fits = fits.single, index = c("CFI", "SRMR"))
 #' #Two models, an unconstrained and a constrained model to compare fit indices
 #'mod.con <- "
@@ -33,7 +34,7 @@
 #'  mod1 = mod,
 #'  mod2 = mod.con,
 #'  x = bb1992,
-#'  rep = 100
+#'  rep = 10
 #')
 #'flex_co(fits = fits.con,
 #'        index = c("CFI", "SRMR"),
@@ -43,7 +44,7 @@
 #'fits.dv.con <- gen_fit(
 #'  mod1 = mod,
 #'  x = bb1992,
-#'  rep = 100,
+#'  rep = 10,
 #'  dv = TRUE,
 #'  dv.factors = c("F4", "F5"),
 #'  dv.cutoff = .9
@@ -73,11 +74,11 @@
 #'fits.dv.merge <- gen_fit(
 #'  mod1 = mod,
 #'  x = bb1992,
-#'  rep = 100,
+#'  rep = 10,
 #'  dv = TRUE,
 #'  dv.factors = c("F4", "F5"),
-#'  merge.mod = TRUE
-#')
+#'  merge.mod = TRUE)
+#'
 #'flex_co(fits = fits.dv.merge,
 #'index = "CFI",
 #'alpha.lev = .05)

@@ -38,4 +38,4 @@ Merging is selected as the discriminant validity testing option given the provid
 > 
 > proc.time()
    user  system elapsed 
- 51.437   3.410  32.789 
+ 52.005   3.477  33.367 

@@ -15,20 +15,46 @@ knitr::opts_chunk$set(
 # Package FCO - Flexible Cutoffs for Model Fit Evaluation in Covariance-Based Structural Models
 
 ## Changes in FCO
-### FCO 0.69
-- Bug fixes in gen_fit for OS compatibility
-- Improvements in the vignette
 
----
+### FCO 0.7.0
+
+-   Speed improvements in the vignette
+-   New naming scheme
+-   Minor revisions to the descriptions and references
+-   Added contributor
+
+------------------------------------------------------------------------
+
+### FCO 0.69
+
+-   Bug fixes in gen_fit for OS compatibility
+-   Improvements in the vignette
+
 ### FCO 0.67
-- First stable release
+
+-   First stable release
 
 ## Description
-The goal of FCO is to to derive flexible cutoffs for fit indices in Covariance-based Structural Equation Modeling based on the paper by Niemand & Mai (2018). Flexible cutoffs are an alternative to fixed cutoffs - rules-of-thumb - regarding an appropriate cutoff for fit indices such as CFI or SRMR. It has been demonstrated that these flexible cutoffs perform better than fixed cutoffs in grey areas where misspecification is not easy to detect. The package provides an alternative to the tool at flexiblecutoffs.org as it allows to tailor flexible cutoffs to a given dataset and model, which is so far not available in the tool. The package simulates fit indices based on a given dataset and model and then estimates the flexible cutoffs. Some useful functions, e.g., to determine the GoF or BoF-nature of a fit index, are provided. So far, additional options for a relative use (is a model better than another?) are provided in an explorative manner.
+
+The goal of FCO is to to derive flexible cutoffs for fit indices in
+Covariance-based Structural Equation Modeling based on the paper by
+Niemand & Mai (2018). Flexible cutoffs are an alternative to fixed
+cutoffs - rules-of-thumb - regarding an appropriate cutoff for fit
+indices such as CFI or SRMR. It has been demonstrated that these
+flexible cutoffs perform better than fixed cutoffs in grey areas where
+misspecification is not easy to detect. The package provides an
+alternative to the tool at flexiblecutoffs.org as it allows to tailor
+flexible cutoffs to a given dataset and model, which is so far not
+available in the tool. The package simulates fit indices based on a
+given dataset and model and then estimates the flexible cutoffs. Some
+useful functions, e.g., to determine the GoF or BoF-nature of a fit
+index, are provided. So far, additional options for a relative use (is a
+model better than another?) are provided in an explorative manner.
 
 ## Installation
 
-You can install the development version of FCO from [GitHub](https://github.com/) with:
+You can install the development version of FCO from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -37,7 +63,9 @@ devtools::install_github("ThomasNiemand/FCO")
 
 ## Example
 
-This is the basic usage for FCO in case of deriving flexible cutoffs for a single model:
+This is the basic usage for FCO in case of deriving flexible cutoffs for
+a single model:
+
 
 ```{r example}
 library(FCO)
@@ -51,12 +79,8 @@ F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
 
-#Empirical fit
-res <- cfa(mod, data = bb1992)
-fitmeasures(res, fit.measures = c("CFI", "SRMR"))
-
 #Flexible cutoffs for this model
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
 flex_co(fits = fits.single, index = c("CFI", "SRMR"))
 
 #Use recommend function

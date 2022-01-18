@@ -6,7 +6,7 @@
 #' @usage data(bb1992)
 #' @format A data.frame of 22 variables (Q1-Q22) with 502 observations
 #' @keywords datasets
-#' @references Babakus, E., & Boller, G. W. (1992). An empirical assessment of the SERVQUAL scale. Journal of Business Research, 24(3), 253–268.
+#' @references Babakus, E., & Boller, G. W. (1992). An empirical assessment of the SERVQUAL scale. Journal of Business Research, 24(3), 253–268. https://doi.org/10.1016/0148-2963(92)90022-4
 #' @examples
 #'data(bb1992)
 #'head(bb1992, 3)

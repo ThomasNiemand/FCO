@@ -42,8 +42,3 @@ pop_mod(mod, x = bb1992, type = "NM", afl = .9)$pop.mod
 pop_mod(mod, x = bb1992, type = "NM", aco = .5)$pop.mod
 pop_mod(mod, x = bb1992, type = "EM", standardized = FALSE)$pop.mod
 }
-\references{
-Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55.
-
-Niemand, T., & Mai, R. (2018). Flexible cutoff values for fit indices in the evaluation of structural equation models. Journal of the Academy of Marketing Science, 46(6), 1148—1172.
-}

@@ -20,6 +20,7 @@ A list of information regarding discriminant validity testing.
 This function recommends on potential issues for discriminant validity testing, based on  differences between fit values and differences between flexible cutoffs. Two approaches of testing are supported: merging and constraining.
 }
 \examples{
+#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 mod <- "
 F1 =~ Q5 + Q7 + Q8
 F2 =~ Q2 + Q4
@@ -31,7 +32,7 @@ F5 =~ Q6 + Q14 + Q15 + Q16
 fits.dv.con <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
  dv.cutoff = .9
@@ -41,7 +42,7 @@ recommend_dv(fits.dv.con)
 fits.dv.merge <- gen_fit(
  mod1 = mod,
  x = bb1992,
- rep = 100,
+ rep = 10,
  dv = TRUE,
  dv.factors = c("F4", "F5"),
  merge.mod = TRUE

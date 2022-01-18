@@ -6,6 +6,7 @@
 #' @param digits An optional integer to round fit values and cutoffs (min: 1, max: 5).
 #' @return A list of information regarding discriminant validity testing.
 #' @examples
+#'#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 #'mod <- "
 #'F1 =~ Q5 + Q7 + Q8
 #'F2 =~ Q2 + Q4
@@ -13,11 +14,12 @@
 #'F4 =~ Q1 + Q17
 #'F5 =~ Q6 + Q14 + Q15 + Q16
 #'"
-#' #Two models for discriminant validity testing, this resembles constraining with a cutoff of .9
+
+#'#Two models for discriminant validity testing, this resembles constraining with a cutoff of .9
 #'fits.dv.con <- gen_fit(
 #'  mod1 = mod,
 #'  x = bb1992,
-#'  rep = 100,
+#'  rep = 10,
 #'  dv = TRUE,
 #'  dv.factors = c("F4", "F5"),
 #'  dv.cutoff = .9
@@ -27,7 +29,7 @@
 #'fits.dv.merge <- gen_fit(
 #'  mod1 = mod,
 #'  x = bb1992,
-#'  rep = 100,
+#'  rep = 10,
 #'  dv = TRUE,
 #'  dv.factors = c("F4", "F5"),
 #'  merge.mod = TRUE
@@ -141,11 +143,11 @@ recommend_dv <-
     rownames(fi) <- NULL
     alpha <- NULL
     fi$model <- c("original", mn)
-    colnames(fi)[1:length(index)] <- c(toupper(index))
+    colnames(fi)[seq_len(length(index))] <- c(toupper(index))
     diff <-
       data.frame(matrix(NA, nrow = length(ap), ncol = length(index)))
     for (i in seq_len(length(ap))) {
-      ss <- subset(tab, alpha == ap[i])[, 1:length(index)]
+      ss <- subset(tab, alpha == ap[i])[, seq_len(length(index))]
       if (length(index) == 1) {
         diff[i,] <- ss[1] - ss[2]
       }
@@ -155,7 +157,7 @@ recommend_dv <-
     }
     names(diff) <- toupper(index)
     diff <-
-      t(rbind(diff, fi[1, 1:length(index)] - fi[2, 1:length(index)]))
+      t(rbind(diff, fi[1, seq_len(length(index))] - fi[2, seq_len(length(index))]))
     colnames(diff) <- c(paste0("cutoff ", ap), "fit")
     decide.dv <- function(tab, fi, diff, index) {
       model <- NULL
@@ -205,7 +207,7 @@ recommend_dv <-
     diff <- data.frame(t(diff))
     decs <- data.frame(decs)
     names(decs) <- colnames(diff)
-    rownames(decs) <- rownames(diff)[1:length(ap)]
+    rownames(decs) <- rownames(diff)[seq_len(length(ap))]
     tab[, toupper(index)] <- round(tab[, toupper(index)], digits)
     fi[, toupper(index)] <- round(fi[, toupper(index)], digits)
     diff[, toupper(index)] <- round(diff[, toupper(index)], digits)

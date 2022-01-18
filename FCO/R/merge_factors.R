@@ -25,9 +25,9 @@ merge_factors <- function(fit, merged.factors = NULL) {
                  pt$op == "=~")] <- vars[mf[1]]
   pt2 <-
     lapply(pt, function(x)
-      x[seq(1:length(pt$lhs))[-which(pt$rhs == vars[mf[2]] |
-                                       pt$lhs == vars[mf[2]])]])
-  pt2$id <- seq(1:length(pt2$id))
+      x[seq_len(length(pt$lhs))[-which(pt$rhs == vars[mf[2]] |
+                                         pt$lhs == vars[mf[2]])]])
+  pt2$id <- seq_len(length(pt2$id))
   if (std.lv) {
     fw <- which(pt2$free == 0)
   }
@@ -37,6 +37,7 @@ merge_factors <- function(fit, merged.factors = NULL) {
     fw <- which(pt2$free == 0)[-2]
   }
   pt2$free[-fw] <- seq(1:(length(pt2$free) - length(fw)))
+  #(seq_len(length(pt2$free)) - length(fw))
   pt2$start <- NULL
   pt2$est <- NULL
   pt2$se <- NULL

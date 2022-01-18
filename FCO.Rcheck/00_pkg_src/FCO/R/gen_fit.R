@@ -25,11 +25,11 @@
 #' @param pop.mod1 For flexibility reasons, an optional lavaan population model can be provided.
 #' @param pop.mod2 Another optional lavaan population model.
 #' @return A list of simulated fit statistics (fco) and all previously defined parameters.
-#' @references Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55.
-#' @references Niemand, T., & Mai, R. (2018). Flexible cutoff values for fit indices in the evaluation of structural equation models. Journal of the Academy of Marketing Science, 46(6), 1148—1172.
-#' @references Rönkkö, M., & Cho, E. (2020). An updated guideline for assessing discriminant validity. Organizational Research Methods. doi: 10.1177/1094428120968614.
+#' @references Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55. https://doi.org/10.1080/10705519909540118
+#' @references Niemand, T., & Mai, R. (2018). Flexible cutoff values for fit indices in the evaluation of structural equation models. Journal of the Academy of Marketing Science, 46(6), 1148—1172. https://doi.org/10.1007/s11747-018-0602-9
+#' @references Rönkkö, M., & Cho, E. (2020). An updated guideline for assessing discriminant validity. Organizational Research Methods. https://doi.org/10.1177/1094428120968614
 #' @examples
-#'
+#'#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 #' #A single model to obtain fit indices for
 #'mod <- "
 #'F1 =~ Q5 + Q7 + Q8
@@ -38,7 +38,7 @@
 #'F4 =~ Q1 + Q17
 #'F5 =~ Q6 + Q14 + Q15 + Q16
 #'"
-#' fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100, standardized = FALSE)
+#' fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 #'
 #' #Two models, an unconstrained and a constrained model to compare fit indices
 #'mod.con <- "
@@ -53,14 +53,14 @@
 #'  mod1 = mod,
 #'  mod2 = mod.con,
 #'  x = bb1992,
-#'  rep = 100
+#'  rep = 10
 #')
 
 #' #Two models for discriminant validity testing, this resembles constraining with a cutoff of .9
 #'fits.dv.con <- gen_fit(
 #'  mod1 = mod,
 #'  x = bb1992,
-#'  rep = 100,
+#'  rep = 10,
 #'  dv = TRUE,
 #'  dv.factors = c("F4", "F5"),
 #'  dv.cutoff = .9
@@ -70,7 +70,7 @@
 #'fits.dv.merge <- gen_fit(
 #'  mod1 = mod,
 #'  x = bb1992,
-#'  rep = 100,
+#'  rep = 10,
 #'  dv = TRUE,
 #'  dv.factors = c("F4", "F5"),
 #'  merge.mod = TRUE
@@ -171,9 +171,9 @@ gen_fit <-
     if (!multi.core) {
       cores <- 1
     }
-    g <- expand.grid(nullm2 = c(T, F),
-                     mm = c(T, F),
-                     dv = c(T, F))
+    g <- expand.grid(nullm2 = c(TRUE, FALSE),
+                     mm = c(TRUE, FALSE),
+                     dv = c(TRUE, FALSE))
     g$opt <- c(rep("dv", 5), rep("cfa", 3))
     g$mode <-
       c(

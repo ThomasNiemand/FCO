@@ -6,7 +6,6 @@
 #' For example, based on Rönkkö & Cho (2020), a cutoff of .9 indicates a severe issue in discriminant validity between the selected factors. Cutoffs between .8 and 1 are recommended.
 #' The function returns a warning, if the cutoff is below .8.
 #' @return An alternative model with the cutoff as correlation between the selected factors. This model can be used in function gen_fit to generate flexible cutoffs. It will be automatically generated in gen_fit, if not provided manually.
-#' @references Rönkkö, M., & Cho, E. (2020). An updated guideline for assessing discriminant validity. Organizational Research Methods. doi: 10.1177/1094428120968614.
 #' @noRd
 constr_mod <- function(mod, dv.factors = NULL, dv.cutoff) {
   mod <- gsub(" ", "", mod)
