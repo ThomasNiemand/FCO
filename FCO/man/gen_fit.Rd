@@ -5,9 +5,10 @@
 \title{Obtain fit statistics from one or two models}
 \usage{
 gen_fit(
-  mod1,
+  mod1 = NULL,
   mod2 = NULL,
-  x,
+  x = NULL,
+  n = NULL,
   rep = 500,
   type = "NM",
   dv = FALSE,
@@ -18,16 +19,19 @@ gen_fit(
   assume.mvn = TRUE,
   multi.core = TRUE,
   cores = 2,
+  seed = 1111,
   pop.mod1 = NULL,
   pop.mod2 = NULL
 )
 }
 \arguments{
-\item{mod1}{A lavaan model to specifiy the CFA.}
+\item{mod1}{A lavaan model to specify the CFA.}
 
 \item{mod2}{Another lavaan model for a model comparison. If missing and merge.mod = TRUE, a merged model from function merge_factors is estimated based on mod1.}
 
 \item{x}{A dataset for the model of nrow observations (minimum: 50) and ncol indicators (minimum: 4)}
+
+\item{n}{A sample size specified instead of a dataset (minimum: 50, maximum: 50000). Requires a population model via pop.mod1.}
 
 \item{rep}{Number of replications to be simulated (default: 500, minimum: 10, maximum: 5000)}
 
@@ -58,7 +62,9 @@ If TRUE (the default), mclapply (on Linux or Mac machines) or parLapply (on Wind
 
 \item{cores}{How many cores should be used for multiple cores? The default is 2. Consider the available number of cores of your system.}
 
-\item{pop.mod1}{For flexibility reasons, an optional lavaan population model can be provided.}
+\item{seed}{The seed to be set to obtain reproducible cutoffs (default: 1111). Defines a vector of length rep with the seed being the first value.}
+
+\item{pop.mod1}{For flexibility reasons, an optional lavaan population model can be provided. This is required together with n if x is missing.}
 
 \item{pop.mod2}{Another optional lavaan population model.}
 }
@@ -80,6 +86,7 @@ F5 =~ Q6 + Q14 + Q15 + Q16
 "
 fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 
+\donttest{
 #Two models, an unconstrained and a constrained model to compare fit indices
 mod.con <- "
 F1 =~ Q5 + Q7 + Q8
@@ -114,6 +121,7 @@ fits.dv.merge <- gen_fit(
  dv.factors = c("F4", "F5"),
  merge.mod = TRUE
 )
+}
 }
 \references{
 Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55. https://doi.org/10.1080/10705519909540118

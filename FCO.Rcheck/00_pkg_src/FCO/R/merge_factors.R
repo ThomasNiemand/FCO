@@ -6,7 +6,7 @@
 #' @return A lavaan parameter table of the merged factors.
 #' @noRd
 merge_factors <- function(fit, merged.factors = NULL) {
-  if (class(fit) != "lavaan")
+  if (!inherits(fit, "lavaan"))
     stop("Object fit is not a fitted model from lavaan. Please revise.")
   checkmate::assertVector(merged.factors, len = 2, null.ok = TRUE)
   std.lv <- ifelse(fit@Options$std.lv, TRUE, FALSE)

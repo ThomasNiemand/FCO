@@ -66,7 +66,9 @@ test_that("Is the result rounded properly?",
               fits = fits.dv.con,
               digits = 5
             ))
-            expect_equal(nchar(unlist(strsplit(
-              as.character(out$cutoffs[2, 1]), ".", fixed = T
-            ))[2]), 5)
+            mm <- rep(NA, nrow(out$cutoffs))
+            for (i in seq_along(out$cutoffs[,1])) {
+              mm[i] <- match(TRUE, round(out$cutoffs[i, 1], 1:5) == out$cutoffs[i, 1])
+            }
+            expect_equal(max(mm), 5)
           })

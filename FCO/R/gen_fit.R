@@ -1,8 +1,9 @@
 #' Obtain fit statistics from one or two models
 #'
-#' @param mod1 A lavaan model to specifiy the CFA.
+#' @param mod1 A lavaan model to specify the CFA.
 #' @param mod2 Another lavaan model for a model comparison. If missing and merge.mod = TRUE, a merged model from function merge_factors is estimated based on mod1.
 #' @param x A dataset for the model of nrow observations (minimum: 50) and ncol indicators (minimum: 4)
+#' @param n A sample size specified instead of a dataset (minimum: 50, maximum: 50000). Requires a population model via pop.mod1.
 #' @param rep Number of replications to be simulated (default: 500, minimum: 10, maximum: 5000)
 #' @param type Type of underlying population model. Based on the model(s) provided, a population model is derived to simulate the fit indices by function pop_mod. The type determines
 #' the factor loadings and covariances assumed for this population model. NM (the default when only one model is provided): Uses the factor loadings and
@@ -22,7 +23,8 @@
 #' @param multi.core Should multiple cores be used to simulate fit indices?
 #' If TRUE (the default), mclapply (on Linux or Mac machines) or parLapply (on Windows machines) from parallel package with the number of specified cores is used. If FALSE, a single core is used.
 #' @param cores How many cores should be used for multiple cores? The default is 2. Consider the available number of cores of your system.
-#' @param pop.mod1 For flexibility reasons, an optional lavaan population model can be provided.
+#' @param seed The seed to be set to obtain reproducible cutoffs (default: 1111). Defines a vector of length rep with the seed being the first value.
+#' @param pop.mod1 For flexibility reasons, an optional lavaan population model can be provided. This is required together with n if x is missing.
 #' @param pop.mod2 Another optional lavaan population model.
 #' @return A list of simulated fit statistics (fco) and all previously defined parameters.
 #' @references Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55. https://doi.org/10.1080/10705519909540118
@@ -40,6 +42,7 @@
 #'"
 #' fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 #'
+#'\donttest{
 #' #Two models, an unconstrained and a constrained model to compare fit indices
 #'mod.con <- "
 #'F1 =~ Q5 + Q7 + Q8
@@ -75,11 +78,13 @@
 #'  dv.factors = c("F4", "F5"),
 #'  merge.mod = TRUE
 #')
+#'}
 #' @export
 gen_fit <-
-  function(mod1,
+  function(mod1 = NULL,
            mod2 = NULL,
-           x,
+           x = NULL,
+           n = NULL,
            rep = 500,
            type = "NM",
            dv = FALSE,
@@ -90,17 +95,20 @@ gen_fit <-
            assume.mvn = TRUE,
            multi.core = TRUE,
            cores = 2,
+           seed = 1111,
            pop.mod1 = NULL,
            pop.mod2 = NULL) {
     #Checks
     checkmate::assertCharacter(mod1,
-                               fixed = "=~")
+                               fixed = "=~", null.ok = TRUE)
     checkmate::assertCharacter(mod2,
                                fixed = "=~", null.ok = TRUE)
     checkmate::assertDataFrame(x,
                                min.rows = 50,
                                min.cols = 4,
-                               col.names = "unique")
+                               col.names = "unique",
+                               null.ok = TRUE)
+    checkmate::assertNumeric(n, lower = 50, upper = 50000, null.ok = TRUE)
     checkmate::assertNumeric(rep, lower = 10, upper = 5000)
     checkmate::assert(
       checkmate::checkCharacter(type,
@@ -123,6 +131,7 @@ gen_fit <-
     checkmate::assertLogical(assume.mvn)
     checkmate::assertLogical(multi.core)
     checkmate::assertNumeric(cores, lower = 1)
+    checkmate::assertNumeric(seed, any.missing = FALSE)
     #Check the structure of pop.mods
     if (!is.null(pop.mod1) &
         is.list(pop.mod1))
@@ -136,17 +145,35 @@ gen_fit <-
     checkmate::assertCharacter(pop.mod2,
                                fixed = "=~",
                                null.ok = TRUE)
-    #Check the current no. of fit indices provided by lavaan
-    nf <-
-      length(lavaan::fitmeasures(
-        lavaan::cfa(
-          mod = "F =~ x1 +x2 +x3",
-          data = lavaan::HolzingerSwineford1939,
-          estimator = "MLM"
-        )
-      ))
+    stopn <- "Please either provide a) model and dataset or b) population model and sample size."
+    if (is.null(x)) {
+      if (is.null(n)) stop(stopn)
+      if (!is.null(n)) {
+        if(is.null(pop.mod1)) stop(stopn)
+      }
+    }
+    if (!is.null(x)) {
+      if(is.null(mod1)) stop(stopn)
+      if(!is.null(pop.mod1)) stop(stopn)
+    }
+    if (!is.null(pop.mod1)) {
+      if (!grepl("\\*", strsplit(pop.mod1, split = "\n")[[1]])[1]) stop("You provided a population model that looks like a model. Please revise.")
+    }
+    if (!is.null(pop.mod2)) {
+      if (!grepl("\\*", strsplit(pop.mod2, split = "\n")[[1]])[1]) stop("You provided a second population model that looks like a model. Please revise.")
+    }
+        #Check the current no. of fit indices provided by lavaan
+    # nf <-
+    #   length(lavaan::fitmeasures(
+    #     lavaan::cfa(
+    #       mod = "F =~ x1 +x2 +x3",
+    #       data = lavaan::HolzingerSwineford1939,
+    #       estimator = "MLM"
+    #     )
+    #   ))
+    nf <- 69
     #Set normality
-    if (!assume.mvn) {
+    if (!assume.mvn & !is.null(x)) {
       k <-
         unname(semTools::mardiaKurtosis(x)["b2d"]) / (ncol(x) * (ncol(x) + 2))
       #Centered kurtosis
@@ -156,7 +183,7 @@ gen_fit <-
       k <- 1
       s <- 1
     }
-    seeds <- 111111:116110 #old: 999999
+    seeds <- seq(from = seed, to = seed + rep - 1)
     RNGkind("L'Ecuyer-CMRG")
     #Seeds are hold constant for replication
     if (multi.core) {
@@ -213,15 +240,15 @@ gen_fit <-
             standardized = standardized
           )$pop.mod
       }
-      if (!is.null(pop.mod1)) {
-        pop.mod <- pop.mod1
-      }
+      if (!is.null(pop.mod1)) pop.mod <- pop.mod1
+      if (identical(mod1, pop.mod)) stop("You provided a model that looks like a population model. Please revise.")
       free <- mod1
       if (multi.core & .Platform$OS.type != "windows") {
         fits <-
           parallel::mclapply(1:rep, function(r) {
             generator(
               x = x,
+              n = n,
               seed = seeds[r],
               mode = mode,
               pop.mod1 = pop.mod,
@@ -237,6 +264,7 @@ gen_fit <-
           parallel::parLapply(clus, 1:rep, function(r) {
             generator(
               x = x,
+              n = n,
               seed = seeds[r],
               mode = mode,
               pop.mod1 = pop.mod,
@@ -252,6 +280,7 @@ gen_fit <-
           lapply(1:rep, function(r) {
             generator(
               x = x,
+              n = n,
               seed = seeds[r],
               mode = mode,
               pop.mod1 = pop.mod,
@@ -274,6 +303,7 @@ gen_fit <-
             standardized = standardized
           )$pop.mod
       }
+      if (identical(mod1, pop.mod1)) stop("You provided a model that looks like a population model. Please revise.")
       free1 <- mod1
       if (mode == "dual" | mode == "constraining") {
         #Dual models, no dv
@@ -322,6 +352,7 @@ gen_fit <-
           parallel::mclapply(1:rep, function(r) {
             generator(
               x = x,
+              n = n,
               seed = seeds[r],
               mode = mode,
               pop.mod1 = pop.mod1,
@@ -338,6 +369,7 @@ gen_fit <-
           parallel::parLapply(clus, 1:rep, function(r) {
             generator(
               x = x,
+              n = n,
               seed = seeds[r],
               mode = mode,
               pop.mod1 = pop.mod1,
@@ -354,6 +386,7 @@ gen_fit <-
           lapply(1:rep, function(r) {
             generator(
               x = x,
+              n = n,
               seed = seeds[r],
               mode = mode,
               pop.mod1 = pop.mod1,
@@ -374,6 +407,7 @@ gen_fit <-
       "mod1" = mod1,
       "mod2" = mod2,
       "x" = x,
+      "n" = n,
       "rep" = rep,
       "type" = type,
       "dv" = dv,
@@ -384,6 +418,7 @@ gen_fit <-
       "assume.mvn" = assume.mvn,
       "multi.core" = multi.core,
       "cores" = cores,
+      "seed" = seed,
       "pop.mod1" = pop.mod1,
       "pop.mod2" = pop.mod2
     )

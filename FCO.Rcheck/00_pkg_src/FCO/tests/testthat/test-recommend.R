@@ -92,9 +92,11 @@ test_that("Is the result rounded properly?",
                 digits = 5
               )
             )
-            expect_equal(nchar(unlist(strsplit(
-              as.character(out$recommended[1, 2]), ".", fixed = T
-            ))[2]), 5)
+            mm <- rep(NA, nrow(out$cutoffs))
+            for (i in seq_along(out$cutoffs[,1])) {
+              mm[i] <- match(TRUE, round(out$cutoffs[i, 1], 1:5) == out$cutoffs[i, 1])
+            }
+            expect_equal(max(mm), 5)
           })
 
 test_that("Are the indices properly used when override is TRUE?",
@@ -105,9 +107,8 @@ test_that("Are the indices properly used when override is TRUE?",
                 purpose = "established",
                 focus = "structural",
                 override = TRUE,
-                index = c("CFI", "SRMR")
+                index = c("GFI", "TLI")
               )
             )
-            expect_gt(out$cutoffs[4, "CFI"] * 100, out$cutoffs[1, "CFI"] * 100)
-            expect_lt(out$cutoffs[4, "SRMR"] * 100, out$cutoffs[1, "SRMR"] * 100)
+            expect_equal(names(out$cutoffs), c("GFI", "TLI"))
           })

@@ -7,10 +7,6 @@ library(lavaan)
 library(MASS)
 library(ggplot2)
 
-## ----install------------------------------------------------------------------
-#install.packages("FCO")
-#Add later when published on CRAN
-
 ## ----setup--------------------------------------------------------------------
 library(FCO)
 
@@ -54,6 +50,10 @@ pop_mod(mod, x = bb1992, type = "EM")$pop.mod
 pop_mod(mod, x = bb1992, type = "NM", afl = .9)$pop.mod
 pop_mod(mod, x = bb1992, type = "NM", aco = .5)$pop.mod
 pop_mod(mod, x = bb1992, type = "EM", standardized = FALSE)$pop.mod
+
+## ----alternative specification via pop.mod1 and n-----------------------------
+pop.mod <- pop_mod(mod, x = bb1992)$pop.mod
+fits.altern <- gen_fit(pop.mod1 = pop.mod, n = 502, rep = 10)
 
 ## ----index guessing-----------------------------------------------------------
 index_guess("cfi")

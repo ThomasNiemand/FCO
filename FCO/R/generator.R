@@ -2,23 +2,37 @@
 #'
 #' Allows for one or two models. In case of the latter, it only generates data from the population model of model one.
 #' @noRd
-generator <- function(x,
+generator <- function(x = NULL,
+                      n = NULL,
                       seed,
                       mode,
                       pop.mod1,
-                      free1,
+                      free1 = NULL,
                       free2 = NULL,
                       s = 1,
                       k = 1,
                       nf) {
   y <- NA
+  if (is.null(x) & is.null(n)) stop("Either x or n must be specified.")
+  if (!is.null(x)) n <- nrow(x)
   rf1 <- rep(NA, nf)
   rf2 <- rf1
   af <- rf1
+  if (is.null(free1)) {
+    #free1 <- simstandard::fixed2free(pop.mod1)
+    pt <- lavaan::lavaanify(pop.mod1)
+    pt <- pt[which(pt$op == "=~"),]
+    free1 <- vector("list", length(unique(pt$lhs)))
+    names(free1) <- unique(pt$lhs)
+    for (i in unique(pt$lhs)) {
+      free1[[i]] <- paste0(i, " =~ ", paste0(pt[which(pt$lhs == i), "rhs"], collapse = " + "))
+    }
+    free1 <- paste0(unlist(free1), collapse = "\n")
+  }
   y <- try(lavaan::simulateData(
     model = pop.mod1,
     model.type = "cfa",
-    sample.nobs = nrow(x),
+    sample.nobs = n,
     skewness = s,
     kurtosis = k,
     seed = seed,

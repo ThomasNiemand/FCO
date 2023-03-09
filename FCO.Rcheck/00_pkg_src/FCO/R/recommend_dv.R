@@ -6,6 +6,7 @@
 #' @param digits An optional integer to round fit values and cutoffs (min: 1, max: 5).
 #' @return A list of information regarding discriminant validity testing.
 #' @examples
+#' \donttest{
 #'#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 #'mod <- "
 #'F1 =~ Q5 + Q7 + Q8
@@ -35,6 +36,7 @@
 #'  merge.mod = TRUE
 #')
 #'recommend_dv(fits.dv.merge)
+#'}
 #' @export
 recommend_dv <-
   function(fits,

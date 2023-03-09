@@ -11,23 +11,46 @@ F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22
 F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
+
+pop.mod <- pop_mod(mod = mod, x = bb1992)$pop.mod
+
 test_that("Is the result fco of gen_fit a list of length rep?",
           {
             out <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
-            expect_true(is.list(out$fco))
+            expect_type(out$fco, "list")
             expect_equal(length(out$fco), 10)
           })
 
 test_that("Is mod1 a model?",
           {
             out <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
-            expect_true(is.data.frame(lavaanify(out$mod1)))
+            expect_s3_class(lavaanify(out$mod1), "data.frame")
           })
 
 test_that("Is x a data.frame?",
           {
             out <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
-            expect_true(is.data.frame(out$x))
+            expect_s3_class(out$x, "data.frame")
+          })
+
+test_that("Is n expected when x is not given?",
+          {
+            expect_error(gen_fit(mod1 = mod, n = 500, rep = 10))
+          })
+
+test_that("Is an error returned when neither x nor n is not given?",
+          {
+            expect_error(gen_fit(mod1 = mod, rep = 10))
+          })
+
+test_that("Is an error returned when mod is not given?",
+          {
+            expect_error(gen_fit(x = bb1992, rep = 10))
+          })
+
+test_that("Is an error returned when pop.mod is not given?",
+          {
+            expect_error(gen_fit(n = 500, rep = 10))
           })
 
 test_that("Is standard type NM?",
@@ -73,7 +96,7 @@ test_that("Is the result fco of gen_fit a list of matrices with two rows?",
               x = bb1992,
               rep = 10
             )
-            expect_true(is.list(out$fco))
+            expect_type(out$fco, "list")
             expect_equal(nrow(do.call("rbind", out$fco)), 20)
           })
 
@@ -85,7 +108,7 @@ test_that("Is a second model accepted?",
               x = bb1992,
               rep = 10
             )
-            expect_true(is.data.frame(lavaanify(out$mod2)))
+            expect_s3_class(lavaanify(out$mod2), "data.frame")
           })
 
 test_that("Is type EM used when DV is TRUE?",
@@ -196,4 +219,22 @@ test_that("Is the number of cores 1 when multi.core is FALSE?",
                 multi.core = FALSE
               )
             expect_equal(out$cores, 1)
+          })
+
+test_that("Is the seed set properly?",
+          {
+            out1 <-
+              gen_fit(
+                mod1 = mod,
+                x = bb1992,
+                rep = 10
+              )
+            out2 <-
+              gen_fit(
+                mod1 = mod,
+                x = bb1992,
+                rep = 10,
+                seed = 1111
+              )
+            expect_equal(out1$seed, out2$seed)
           })

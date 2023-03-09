@@ -21,6 +21,7 @@
 #'"
 #'fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10, standardized = FALSE)
 #'flex_co(fits = fits.single, index = c("CFI", "SRMR"))
+#'\donttest{
 #' #Two models, an unconstrained and a constrained model to compare fit indices
 #'mod.con <- "
 #'F1 =~ Q5 + Q7 + Q8
@@ -95,6 +96,7 @@
 #'  ),
 #'  fit.measures = "cfi"
 #')
+#'}
 #' @export
 flex_co <-
   function(fits,
