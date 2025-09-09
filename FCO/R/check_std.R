@@ -4,6 +4,7 @@
 #' @param dv.factors ...
 #' @param dv.cutoff ...
 #' @return A cutoff for discriminant validity testing if model is not standardized
+#' @keywords internal
 #' @noRd
 check_std <- function(fit, dv.factors, dv.cutoff) {
   psi <- lavaan::inspect(fit, "free")$psi

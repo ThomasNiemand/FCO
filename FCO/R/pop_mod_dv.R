@@ -3,6 +3,7 @@
 #' @param pop.mod A population model, potentially from function pop_mod.
 #' @param dv.factors (same as constr_mod)
 #' @param dv.cutoff (same as constr_mod)
+#' @keywords internal
 #' @return An alternative population model with the cutoff as correlation between the selected factors. This population model can be used in function gen_fit to generate flexible cutoffs.
 #' @noRd
 pop_mod_dv <-

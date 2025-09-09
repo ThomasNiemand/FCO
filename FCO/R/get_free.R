@@ -3,6 +3,7 @@
 #' @param pt A lavaan parameter table. Please use factors / latent variables with uppercase names (e.g., F1). The function is an addition to simstandard:fixed2free which only works with models.
 #' @param dv.factors The selected factors relevant in case of retaining constraints
 #' @param mode Mode to be a relevant for constraints. Only if mode is constraining, constraints are kept.
+#' @keywords internal
 #' @return The syntax of a free lavaan model
 #' @noRd
 get_free <- function(pt, dv.factors, mode) {

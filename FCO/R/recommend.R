@@ -37,14 +37,47 @@ recommend <-
       stop(
         "Only single model fit indices are supported so far for this function. Please revise or use flex_co."
       )
-    checkmate::assertCharacter(fits$mod1,
-                               fixed = "=~")
-    checkmate::assertDataFrame(
-      fits$x,
-      min.rows = 50,
-      min.cols = 4,
-      col.names = "unique"
-    )
+    if (is.null(fits$pop.mod1)) {
+      checkmate::assertCharacter(fits$mod1,
+                                 fixed = "=~")
+      checkmate::assertDataFrame(
+        fits$x,
+        min.rows = 50,
+        min.cols = 4,
+        col.names = "unique"
+      )
+      n <- nrow(fits$x)
+      fm <-
+        try(lavaan::fitmeasures(
+          lavaan::cfa(
+            fits$mod1,
+            data = fits$x,
+            estimator = "MLM",
+            auto.fix.first = FALSE,
+            std.lv = TRUE
+          )
+        ), silent = TRUE)
+      if (inherits(fm, "try-error"))
+        stop("Invalid model or data. Please revise.")
+    }
+    if (is.null(fits$mod1)) {
+      checkmate::assertCharacter(fits$pop.mod1,
+                                 fixed = "*")
+      checkmate::assertNumeric(fits$n, lower = 50, upper = 50000, null.ok = TRUE)
+      x <- lavaan::simulateData(model = fits$pop.mod1, sample.nobs = fits$n, seed = fits$seed)
+      fm <-
+        try(lavaan::fitmeasures(
+          lavaan::cfa(
+            simstandard::fixed2free(fits$pop.mod1),
+            data = x,
+            estimator = "MLM",
+            auto.fix.first = FALSE,
+            std.lv = TRUE
+          )
+        ), silent = TRUE)
+      if (inherits(fm, "try-error"))
+        stop("Invalid model or data. Please revise.")
+    }
     if (purpose != "novel")
       purpose <- "established"
     checkmate::assert(
@@ -63,19 +96,6 @@ recommend <-
                                 pattern = "structure"),
     )
     checkmate::assert_int(digits, lower = 1, upper = 5)
-    n <- nrow(fits$x)
-    fm <-
-      try(lavaan::fitmeasures(
-        lavaan::cfa(
-          fits$mod1,
-          data = fits$x,
-          estimator = "MLM",
-          auto.fix.first = FALSE,
-          std.lv = TRUE
-        )
-      ), silent = TRUE)
-    if (inherits(fm, "try-error"))
-      stop("Invalid model or data. Please revise.")
     if (!override) {
       if (purpose == "established" & focus == "cfa" & n <= 200) {
         #C1: SRMR flex

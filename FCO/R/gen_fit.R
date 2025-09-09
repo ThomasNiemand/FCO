@@ -157,10 +157,10 @@ gen_fit <-
       if(!is.null(pop.mod1)) stop(stopn)
     }
     if (!is.null(pop.mod1)) {
-      if (!grepl("\\*", strsplit(pop.mod1, split = "\n")[[1]])[1]) stop("You provided a population model that looks like a model. Please revise.")
+      if (!grepl("*", pop.mod1, fixed = TRUE)) stop("You provided a population model that looks like a model. Please revise.")
     }
     if (!is.null(pop.mod2)) {
-      if (!grepl("\\*", strsplit(pop.mod2, split = "\n")[[1]])[1]) stop("You provided a second population model that looks like a model. Please revise.")
+      if (!grepl("*", pop.mod2, fixed = TRUE)) stop("You provided a second population model that looks like a model. Please revise.")
     }
         #Check the current no. of fit indices provided by lavaan
     # nf <-

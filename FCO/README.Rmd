@@ -16,13 +16,20 @@ knitr::opts_chunk$set(
 
 ## Changes in FCO
 
+### FCO 2.0.0
+
+* New release including new functions (e.g., gen_fit2, flex_co2, plot_fit2)
+* The new functions now incorporate multiple extensions of the tool for multple decision rules, Type I and II error control and convenience
+* Old functions remain available for compatibility
+
+------------------------------------------------------------------------
+
 ### FCO 0.8.0
 
 * Changed vignette after release on CRAN
 * Fixed issue in index_guess
 * Allows to specify sample size n instead of dataset x
 
-------------------------------------------------------------------------
 
 ### FCO 0.7.2
 
@@ -67,7 +74,7 @@ available in the tool. The package simulates fit indices based on a
 given dataset and model and then estimates the flexible cutoffs. Some
 useful functions, e.g., to determine the GoF or BoF-nature of a fit
 index, are provided. So far, additional options for a relative use (is a
-model better than another?) are provided in an exploratory manner.
+model better than another?) are provided in an exploratory manner. Starting with version 2, we offer a lot improvements and additional new decision rules as well as many flexibility options. 
 
 ## Installation
 
@@ -84,23 +91,25 @@ library(FCO)
 This is the basic usage for FCO in case of deriving flexible cutoffs for
 a single model:
 
-
 ```{r example}
 library(FCO)
-library(lavaan)
-#Data from bb1992
-mod <- "
-F1 =~ Q5 + Q7 + Q8
-F2 =~ Q2 + Q4
-F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22
-F4 =~ Q1 + Q17
-F5 =~ Q6 + Q14 + Q15 + Q16
-"
+HS.model <- ' visual  =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed   =~ x7 + x8 + x9 '
 
-#Flexible cutoffs for this model
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
-flex_co(fits = fits.single, index = c("CFI", "SRMR"))
+fit <- cfa(
+  HS.model,
+  data = HolzingerSwineford1939
+)
 
-#Use recommend function
-recommend(fits.single)
+#Fit for the model
+fitmeasures(fit)
+
+#Simulation
+#Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
+fits <- gen_fit2(fit = fit, rep = 10)
+
+#Obtain and plot cutoffs
+flex_co2(fits)
+plot_fit2(fits)
 ```

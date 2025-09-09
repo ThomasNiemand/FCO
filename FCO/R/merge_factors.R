@@ -3,6 +3,7 @@
 #' @param fit A fitted lavaan model.
 #' @param merged.factors Names of the factors to be merged. Must be equal to 2. If missing (the default), the first and second factor of the model are selected.
 #' The first factor named will be retained while the second factor will be dropped.
+#' @keywords internal
 #' @return A lavaan parameter table of the merged factors.
 #' @noRd
 merge_factors <- function(fit, merged.factors = NULL) {

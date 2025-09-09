@@ -4,7 +4,16 @@
 \alias{pop_mod}
 \title{Helper function to obtain population model for simulation based on data and model}
 \usage{
-pop_mod(mod, x, type = "NM", standardized = TRUE, afl = 0.7, aco = 0.3)
+pop_mod(
+  mod,
+  x,
+  type = "NM",
+  data.types = NULL,
+  standardized = NULL,
+  afl = 0.7,
+  aco = 0.3,
+  seed = seed
+)
 }
 \arguments{
 \item{mod}{A lavaan model (only CFA supported so far)}
@@ -15,11 +24,15 @@ pop_mod(mod, x, type = "NM", standardized = TRUE, afl = 0.7, aco = 0.3)
 covariances from Niemand & Mai's (2018) simulation study. HB: Uses the factor loadings and covariances from Hu & Bentler's (1999) simulation study.
 EM: Empirical, uses the given factor loadings and covariances. EM is not recommended for confirmative use as it leads to the least generalizable cutoffs.}
 
+\item{data.types}{Types of the manifest variables. Users can specify a vector of the length of variables with C = count, B = binary, O = ordinal, N = normal in the same order as in the dataset. These types are then used to simulate data for the population model based on median (count), mean (binary), cumulative relative frequencies of values (ordinal) as well as mean and variance (normal) applying the PoisBinOrdNor::intermat and PoisBinOrdNor::genPBONdata functions from package PoisBinOrdNor. That is, categorial and binary variables are also supported. Argument type is set to EM when data.types are defined (otherwise, normal data would be implied).}
+
 \item{standardized}{Are factor loadings assumed to be standardized and covariances to be correlations (default: TRUE)?}
 
 \item{afl}{Average factor loading of indicators per factor, only relevant for type = "NM" (default: .7).}
 
 \item{aco}{Average correlation between factors, only relevant for type = "NM" (default: .3).}
+
+\item{seed}{The seed to be set to obtain reproducible cutoffs (default: 1111). Defines a vector of length rep with the seed being the first value.}
 }
 \value{
 List of population model type, standardized, average factor loading and average correlation. All values are round to three decimals.

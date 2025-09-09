@@ -1,6 +1,7 @@
 #' Obtain factor loadings as in Hu & Bentler (1999)
 #'
 #' @param x Vector of length (1:10) containing the loadings per factor
+#' @keywords internal
 #' @return Vector of factor loadings for popluation model
 #' @noRd
 hb_load <- function(x) {
