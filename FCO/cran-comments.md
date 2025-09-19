@@ -2,12 +2,32 @@
 
 There were no ERRORs or WARNINGs. 
 
-There is one NOTE: 
+There are two NOTEs:
 
-checking for future file timestamps ... NOTE
-  unable to verify current time
+Found the following (possibly) invalid URLs:
+   URL: https://github.com/ThomasNiemand/FCO.git (moved to https://github.com/ThomasNiemand/FCO)
+     From: DESCRIPTION
+     Status: 301
+     Message: Moved Permanently
+ For content that is 'Moved Permanently', please change http to https,
+ add trailing slashes, or replace the old by the new URL.
+ 
+Response:  We did so. 
   
-We checked our package and did not find any timestamps. Presumably, it comes from an imported function.
+Check: examples, Result: NOTE
+ Examples with CPU (user + system) or elapsed time > 10s
+          user system elapsed
+ gen_fit2 8.93   0.15   17.73
+
+Flavor: r-devel-linux-x86_64-debian-gcc
+Check: examples, Result: NOTE
+ Examples with CPU (user + system) or elapsed time > 5s
+           user system elapsed
+ gen_fit2 6.167  0.237  12.753
+ flex_co2 2.812  0.309   6.324
+ 
+Response: The function need a while due to an external function from another package PoisBinOrdNor::intermat
+that simply takes a while. We could use donttest if you suggest so. 
 
 Maintainer: ‘Thomas Niemand <thomas.niemand@gmail.com>’
 

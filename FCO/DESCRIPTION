@@ -34,6 +34,7 @@ Description: A toolbox to derive flexible cutoffs for fit indices in
     provided. So far, additional options for a relative use (is a model
     better than another?) are provided in an exploratory manner.
 License: GPL (>= 3)
+URL: https://flexiblecutoffs.org, https://github.com/ThomasNiemand/FCO/
 Depends: 
     R (>= 4.4.0)
 Imports: 
