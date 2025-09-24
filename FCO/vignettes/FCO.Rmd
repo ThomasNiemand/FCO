@@ -41,7 +41,7 @@ Originally proposed by Niemand & Mai (2018), flexible cutoffs (hereafter FCO1) h
 
 -   DFI: A modified dynamic cutoff considering Type I and II error (McNeish & Wolff, 2023). The 1-p (e.g., 95%) quantile of all simulated misfit models is taken when this quantile is smaller than or equal to the p (e.g., 5%) quantile. Otherwise, no cutoff is provided (NA). The DFI-decision rule tends to provide no cutoff when correct and misfit models overlap strongly (assuming a GoF like CFI, alternatively p [misfit model] and 1-p [correct model] for a BoF like SRMR).
 
--   CP: A modified cutoff considering Type I and II error via an optimal cutpoint (Groskurth et al., 2022). The cutoff is found by taking the cutoff with the highest sum of sensitivity (1 – Type I error) and 1 – specificity (Type II error) derived from simulated correct and misfit models via cutpointr::cutpointr. CP always provides a cutoff.
+-   CP: A modified cutoff considering Type I and II error via an optimal cutpoint (Groskurth et al., 2025). The cutoff is found by taking the cutoff with the highest sum of sensitivity (1 – Type I error) and 1 – specificity (Type II error) derived from simulated correct and misfit models via cutpointr::cutpointr. CP always provides a cutoff.
 
 -   Fix: Fixed cutoffs (Hu & Bentler, 1999) are also provided for comparison.
 
@@ -353,13 +353,14 @@ recommend_dv(fits.dv.merge)
 
 The function returns the cutoffs for different levels of alpha and the two models, where the first model is the original model and the second model is termed constrained or merged based on the approach selected in the simulation. Further, the actual fit values are automatically provided. Hence, the constrained or merged model does not needed to be defined explicitly. Differences and decisions based on the different alpha values are provided as well. Finally, the number of replications as well as a comment highlighting the approach and an interpretation of the decision basis (the simple test) are given. Please note that the decisions are identical to the ones made by Rönkkö & Cho's tool in semTools::discriminantValidity.
 
-## References
+  ## References
 
 Babakus, E., & Boller, G. W. (1992). An empirical assessment of the SERVQUAL scale. Journal of Business Research, 24(3), 253--268. [https://doi.org/10.1016/0148-2963(92)90022-4](https://doi.org/10.1016/0148-2963(92)90022-4){.uri}
 
-Cohen, J. (1988). *Statistical power analysis for the behavioral sciences*. Lawrence Erlbaum. <https://doi.org/10.4324/9780203771587>
+Cohen, J. (1988). Statistical power analysis for the behavioral sciences. Lawrence Erlbaum. <https://doi.org/10.4324/9780203771587>
 
-Groskurth, K., Bhaktha, N., & Lechner, C. (2022). Making model judgments ROC (K)-solid: Tailored cutoffs for fit indices through simulation and ROC analysis in structural equation modeling. <https://psyarxiv.com/62j89/download?format=pdf>
+Groskurth, K., Bhaktha, N., & Lechner, C. M. (2025). The simulation-cum-ROC approach: A new approach to generate tailored cutoffs for fit indices through simulation and ROC
+analysis. Behavior Research Methods, 57(5), Article 135. <https://doi.org/10.3758/s13428-025-02638-x>
 
 Hayes, A. F. (2017). Introduction to mediation, moderation, and conditional process analysis: A regression-based approach (2nd ed.). The Guilford Press.
 
