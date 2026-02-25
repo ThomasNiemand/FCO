@@ -8,7 +8,7 @@
 #' @param beta The acceptable Type II error representing the empirical quantile p, see details in gen_fit2. Multiple values can be provided as a vector. Default is c(.05, .10).
 #' @return A ggplot2 object with the simulated cutoffs for correct and misspecified models iterated across the number of indices provided.
 #' @examples
-#' #Simple example
+#' \donttest{#Simple example
 #' library(lavaan)
 #' library(dplyr)
 #' HS.model <- ' visual  =~ x1 + x2 + x3
@@ -20,14 +20,14 @@
 #'   data = HolzingerSwineford1939
 #' )
 #' #Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
-#' fits <- gen_fit2(fit = fit, rep = 10)
+#' fits <- gen_fit2(fit = fit, rep = 100)
 #' #Default plot:
 #' plot_fit2(fits)
 #' #Changed alpha and beta values:
 #' plot_fit2(fits, alpha = .05, beta = .05)
 #' plot_fit2(fits, alpha = .10, beta = .20)
 #' #Different fit indices:
-#' plot_fit2(fits, index = c("CFI", "SRMR", "RMSEA"))
+#' plot_fit2(fits, index = c("CFI", "SRMR", "RMSEA"))}
 #' @export
 plot_fit2 <-
   function(fits = NULL,

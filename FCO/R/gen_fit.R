@@ -175,9 +175,9 @@ gen_fit <-
     #Set normality
     if (!assume.mvn & !is.null(x)) {
       k <-
-        unname(semTools::mardiaKurtosis(x)["b2d"]) / (ncol(x) * (ncol(x) + 2))
+        unname(mardia(x)["kurtosis"]) / (ncol(x) * (ncol(x) + 2))
       #Centered kurtosis
-      s <- unname(semTools::mardiaSkew(x)["b1d"])
+      s <- unname(mardia(x)["skew"])
     }
     if (assume.mvn) {
       k <- 1

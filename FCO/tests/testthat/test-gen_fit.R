@@ -2,7 +2,6 @@
 library(FCO)
 library(testthat)
 library(lavaan)
-library(semTools)
 
 mod <- "
 F1 =~ Q5 + Q7 + Q8
@@ -205,8 +204,8 @@ test_that("Is kurtosis and skewness unequal to 1 when assume.mvn is FALSE?",
                 rep = 10,
                 assume.mvn = FALSE
               )
-            expect_gt(mardiaKurtosis(out$x)[1], 1)
-            expect_gt(mardiaSkew(out$x)[1], 1)
+            expect_gt(FCO:::mardia(out$x)[1], 1)
+            expect_gt(FCO:::mardia(out$x)[1], 1)
           })
 
 test_that("Is the number of cores 1 when multi.core is FALSE?",

@@ -36,7 +36,7 @@ Obtain cutoffs for fit indices simulated by gen_fit2.
 This function returns cutoffs for the the fit indices simulated by gen_fit2. For details, please refer to gen_fit2. Please note that the results are only based on the simulation of the model specified and its misspecified variant under the conditions of the gen_fit2 function.
 }
 \examples{
-#Simple example
+\donttest{#Simple example
 library(lavaan)
 library(dplyr)
 HS.model <- ' visual  =~ x1 + x2 + x3
@@ -48,12 +48,12 @@ fit <- cfa(
   data = HolzingerSwineford1939
 )
 #Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
-fits <- gen_fit2(fit = fit, rep = 10)
+fits <- gen_fit2(fit = fit, rep = 100)
 #Default evaluation:
 flex_co2(fits)
 #Changed alpha and beta values:
 flex_co2(fits, alpha = .05, beta = .05)
 flex_co2(fits, alpha = .10, beta = .20)
 #Different fit indices:
-flex_co2(fits, index = c("CFI", "SRMR", "RMSEA"))
+flex_co2(fits, index = c("CFI", "SRMR", "RMSEA"))}
 }

@@ -1,10 +1,18 @@
+# FCO 2.0.2
+
+* Small changes to solve CRAN check errors on some platforms.
+
+------------------------------------------------------------------------
+
+# FCO 2.0.1
+
+* Skewness and kurtosis now estimated by an internal function as semTools may be archived.
+
 # FCO 2.0.0
 
 * New release including new functions (e.g., gen_fit2, flex_co2, plot_fit2)
 * The new functions now incorporate multiple extensions of the tool for multple decision rules, Type I and II error control and convenience
 * Old functions remain available for compatibility
-
-------------------------------------------------------------------------
 
 # FCO 0.8.1
 

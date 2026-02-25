@@ -8,7 +8,7 @@
 #' @param beta The acceptable Type II error representing the empirical quantile p, see details in gen_fit2. Multiple values can be provided as a vector. Default is c(.05, .10).
 #' @return A list consisting of a tibble for the empirical quantiles estimated for the provided alpha, beta values and indices, a tibble for the derived cutoff values for each parameter (alpha, beta, approach, index, cutoff), a tibble for the evaluation (also True Negatives, False Positives, True Positives, False Negatives, Type I error, Type II error, Sum of both Types, Power and Specificity), a vector for the notation on the evaluation tibble, and a tibble displaying overlap statistics for each index (Overlap percentage, AUC, U-test).
 #' @examples
-#' #Simple example
+#' \donttest{#Simple example
 #' library(lavaan)
 #' library(dplyr)
 #' HS.model <- ' visual  =~ x1 + x2 + x3
@@ -20,14 +20,14 @@
 #'   data = HolzingerSwineford1939
 #' )
 #' #Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
-#' fits <- gen_fit2(fit = fit, rep = 10)
+#' fits <- gen_fit2(fit = fit, rep = 100)
 #' #Default evaluation:
 #' flex_co2(fits)
 #' #Changed alpha and beta values:
 #' flex_co2(fits, alpha = .05, beta = .05)
 #' flex_co2(fits, alpha = .10, beta = .20)
 #' #Different fit indices:
-#' flex_co2(fits, index = c("CFI", "SRMR", "RMSEA"))
+#' flex_co2(fits, index = c("CFI", "SRMR", "RMSEA"))}
 #' @export
 flex_co2 <- function(fits = NULL,
          correct.fits = NULL,
@@ -50,8 +50,9 @@ flex_co2 <- function(fits = NULL,
   }
   ind <- toupper(index)
   #Determine quantiles
-  cs <-
-    as_tibble(matrix(NA, ncol = length(ind), nrow = length(alpha)))
+  cs <- matrix(NA, ncol = length(ind), nrow = length(alpha))
+  colnames(cs) <- ind
+  cs <- dplyr::as_tibble(cs)
   names(cs) <- ind
   for (i in 1:ncol(cs)) {
     if (index_guess(names(cs)[i]) == "GoF") {
@@ -67,9 +68,9 @@ flex_co2 <- function(fits = NULL,
                           na.rm = TRUE)
     }
   }
-  ms <-
-    as_tibble(matrix(NA, ncol = length(ind), nrow = length(beta)))
-  names(ms) <- ind
+  ms <- matrix(NA, ncol = length(ind), nrow = length(beta))
+  colnames(ms) <- ind
+  ms <- dplyr::as_tibble(ms)
   for (i in 1:ncol(ms)) {
     if (index_guess(names(ms)[i]) == "GoF") {
       ms[, i] <- quantile(mf %>% dplyr::select(dplyr::any_of(tolower(ind[i]))),
@@ -90,14 +91,21 @@ flex_co2 <- function(fits = NULL,
     c(rep("correct", length(alpha)), rep("miss", length(beta)))
   tabl <- tidyr::pivot_longer(tab, cols = 1:length(ind), names_to = "index")
   tabl$type <- sapply(tabl$index, index_guess)
-  tabl <- tabl %>% dplyr::mutate(quant = dplyr::if_else(
-    type == "GoF" &
-      mod == "miss",
-    1 - quant,
-    dplyr::if_else(type == "BoF" &
-      mod == "correct",
-      1 - quant, quant),
-    quant)) %>% dplyr::arrange(index, mod)
+  tabl <- tabl %>%
+    dplyr::mutate(
+      type = as.vector(type),
+      mod  = as.vector(mod)
+    )
+  tabl <- tabl %>%
+    dplyr::mutate(
+      quant = dplyr::if_else(
+        (type == "GoF" & mod == "miss") |
+          (type == "BoF" & mod == "correct"),
+        1 - quant,
+        quant
+      )
+    ) %>%
+    dplyr::arrange(index, mod)
   #Cutoffs
   apr <- c("FCO1", "FCO2", "DFI", "Fix", "CP")
   co <- tidyr::expand_grid(alpha = alpha,
@@ -154,8 +162,9 @@ flex_co2 <- function(fits = NULL,
   cp <- dplyr::bind_cols(co, cp)
   cp <- cp %>% dplyr::arrange(SumTypes)
   #Overlap and tests
-  ol <- dplyr::as_tibble(matrix(NA, nrow = 3, ncol = length(ind) + 1))
-  names(ol) <- c("Statistic", ind)
+  ol <- matrix(NA, nrow = 3, ncol = length(ind) + 1)
+  colnames(ol) <- c("Statistic", ind)
+  ol <- dplyr::as_tibble(ol)
   ol[, 1] <-
     c("Overlap (percentage)",
       "AUC (Area under curve)",

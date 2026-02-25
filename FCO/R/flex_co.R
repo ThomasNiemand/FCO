@@ -119,10 +119,9 @@ flex_co <-
     ml <- ifelse(is.null(nrow(fits$fco[[1]])), 1, 2)
     fits <- fits$fco
     if (ml == 1) {
-      #fits.nna <- fits[!sapply(fits, function(x)
-      #  all(is.na(x)))]
-      fits.nna <- fits[!vapply(fits, function(x)
-        all(is.na(x)), numeric(1))]
+      #fits.nna <- fits[!vapply(fits, function(x)
+      #  all(is.na(x)), numeric(1))]
+      fits.nna <- fits[!vapply(fits, function(x) all(is.na(x)), logical(1))]
       na <- length(fits) - length(fits.nna)
       sh.na <- na / length(fits)
       if (!all(index %in% names(fits.nna[[1]])))

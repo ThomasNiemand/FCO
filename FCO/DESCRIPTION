@@ -1,7 +1,7 @@
 Package: FCO
 Title: Flexible Cutoffs for Model Fit Evaluation in Covariance-Based
     Structural Models
-Version: 2.0.0
+Version: 2.0.2
 Authors@R: c(
     person("Thomas", "Niemand", , "thomas.niemand@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7677-1168")),
@@ -51,7 +51,6 @@ Imports:
     PoisBinOrdNor,
     psych,
     rcompanion,
-    semTools,
     simstandard,
     stringr,
     tidyr
@@ -66,4 +65,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

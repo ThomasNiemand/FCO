@@ -5,7 +5,7 @@
 #' FCO1: The original proposed flexible cutoffs (Niemand & Mai, 2018), only considering Type I error. The p (e.g., 5%) quantile of all simulated correct models is taken (assuming a GoF like CFI, alternatively 1-p for a BoF like SRMR).
 #' FCO2: A modified flexible cutoff considering Type I and II error. The 1-p (e.g., 95%) quantile of all simulated misfit models is taken when this quantile is smaller than or equal to the p (e.g., 5%) quantile. Otherwise, the p (e.g., 5%) quantile of all simulated correct models is taken. FCO2 (alike FCO1) always provides a cutoff (assuming a GoF like CFI, alternatively p (misfit model) and 1-p (correct model) for a BoF like SRMR)
 #' DFI: A modified dynamic cutoff considering Type I and II error (McNeish & Wolff, 2023). The 1-p (e.g., 95%) quantile of all simulated misfit models is taken when this quantile is smaller than or equal to the p (e.g., 5%) quantile. Otherwise, no cutoff is provided (NA). The DFI-decision rule tends to provide no cutoff when correct and misfit models overlap strongly (assuming a GoF like CFI, alternatively p (misfit model) and 1-p (correct model) for a BoF like SRMR).
-#' CP: A modified cutoff considering Type I and II error via an optimal cutpoint (Groskurth et al., 2022). The cutoff is found by taking the cutoff with the highest sum of sensitivity (1 – Type I error) and 1 – specificity (Type II error) derived from simulated correct and misfit models via cutpointr::cutpointr. CP always provides a cutoff.
+#' CP: A modified cutoff considering Type I and II error via an optimal cutpoint (Groskurth et al., 2025). The cutoff is found by taking the cutoff with the highest sum of sensitivity (1 – Type I error) and 1 – specificity (Type II error) derived from simulated correct and misfit models via cutpointr::cutpointr. CP always provides a cutoff.
 #' Fix: Fixed cutoffs (Hu & Bentler, 1999) are also provided for comparison.
 #' Since it cannot be objectively determined what level or type of misspecification (and to which extent) demarcates "acceptable" and "unacceptable" misfit, generalizability of the misspecification procedure becomes a vital question. To overcome this issue, a PROCESS-like (Hayes, 2017) approach is proposed. Instead of expecting that the user provides an appropriate misspecified model (as in simsem), which might be highly user-unfriendly, the user only provides a type of misfit model via model.type. This argument defines the number of structural model misspecifications (first integer), measurement model misspecifications (second integer) and residual covariance misspecifications (third integer) assumed for the misfit model. For example, "100" refers to one structural model misspecification (factor correlations set to 0), zero measurement model misspecifications (no cross-loadings set to 0) and zero residual covariances introduced to the correct model described in mod. The default is set to "111", which corresponds to a model where one correlation, one cross-loading and one residual covariance may be overlooked. If a researcher is certain, that only one type of misspecification is important, the value can be changed to a "100", "010", or "001" model for example. Comparing multiple model.type specifications is recommended.
 #' Based on feedback on the previous versions of FCO, some new features are integrated, most importantly direct input of a fitted lavaan object (fit), a one-step calculation of fits, support for different types of variables, extensive checking of the model and data characteristics by an internal function providing better warning and error descriptions, directly setting skewness (sk) and kurtosis (ku), easier parallelization options and random generation (random) of the misfit model. Further, two more functions have been introduced to better compare the implications (e.g., in terms of implied Type I and II errors) across decision rules and to visualize the simulated correct and misfit model distributions.
@@ -32,16 +32,16 @@
 #' @param seed The seed to be set to obtain reproducible cutoffs (default: 1111). Defines a vector of length rep with the seed being the first value.
 #' @param random Should the misspecified population model be generated randomly (default: TRUE)? To avoid a bias by always misspecifying the same parameter in the model based on model.type for every replication (= FALSE), the parameter can be randomly selected (= TRUE). Results differ slightly, yet random = TRUE is a bit slower.
 #' @return A list of simulated fit statistics for correct models (correct.fits) and misfit models (miss.fits).
-#' @references Groskurth, K., Bhaktha, N., & Lechner, C. (2022). Making model judgments ROC (K)-solid: Tailored cutoffs for fit indices through simulation and ROC analysis in structural equation modeling. https://psyarxiv.com/62j89/download?format=pdf
-#' @references Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55. https://doi.org/10.1080/10705519909540118
-#' @references McNeish, D., & Wolf, M. G. (2023). Dynamic fit index cutoffs for confirmatory factor analysis models. Psychological Methods, 28(1), 61–88. https://doi.org/10.1037/met0000425
-#' @references Niemand, T., & Mai, R. (2018). Flexible cutoff values for fit indices in the evaluation of structural equation models. Journal of the Academy of Marketing Science, 46(6), 1148–1172. https://doi.org/10.1007/s11747-018-0602-9
+#' @references Groskurth, K., Bhaktha, N., & Lechner, C. M. (2025). The simulation-cum-ROC approach: A new approach to generate tailored cutoffs for fit indices through simulation and ROC analysis. Behavior Research Methods, 57(5), Article 135. \doi{https://doi.org/10.3758/s13428-025-02638-x}
+#' @references Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. Structural Equation Modeling, 6(1), 1–55. \doi{https://doi.org/10.1080/10705519909540118}
+#' @references McNeish, D., & Wolf, M. G. (2023). Dynamic fit index cutoffs for confirmatory factor analysis models. Psychological Methods, 28(1), 61–88. \doi{https://doi.org/10.1037/met0000425}
+#' @references Niemand, T., & Mai, R. (2018). Flexible cutoff values for fit indices in the evaluation of structural equation models. Journal of the Academy of Marketing Science, 46(6), 1148–1172. \doi{https://doi.org/10.1007/s11747-018-0602-9}
 #' @importFrom stats cor cov median na.omit quantile var
 #' @importFrom dplyr %>% as_tibble
 #' @importFrom parallel mcmapply
 #' @importFrom utils combn
 #' @examples
-#' #Simple example
+#' \donttest{#Simple example
 #' library(lavaan)
 #' library(dplyr)
 #' HS.model <- ' visual  =~ x1 + x2 + x3
@@ -53,7 +53,7 @@
 #'   data = HolzingerSwineford1939
 #' )
 #' #Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
-#' fits <- gen_fit2(fit = fit, rep = 10)
+#' fits <- gen_fit2(fit = fit, rep = 100)
 #' flex_co2(fits)
 #' plot_fit2(fits)
 #'
@@ -72,13 +72,13 @@
 #' cfit <- cfa(model = HS.model, data = cdat)
 #' #Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
 #' cfits <- gen_fit2(fit = cfit,
-#'                   data.types = c("C", "B", "C", "B", "O", "N", "N", "O", "N"), rep = 10)
+#'                   data.types = c("C", "B", "C", "B", "O", "N", "N", "O", "N"), rep = 100)
 #' flex_co2(cfits)
 #' plot_fit2(cfits)
 #'
 #' #Multiple fit indices
 #' flex_co2(fits, index = c("cfi", "SRMR", "RMSEA"))
-#' plot_fit2(fits, index = c("cfi", "SRMR", "RMSEA"))
+#' plot_fit2(fits, index = c("cfi", "SRMR", "RMSEA"))}
 #' @export
 gen_fit2 <- function(fit = NULL,
                      mod = NULL,
