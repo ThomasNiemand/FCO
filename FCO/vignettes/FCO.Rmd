@@ -67,7 +67,7 @@ library(FCO)
 
 In an initial example, we use the data from Holzinger & Swineford (1939) to illustrate the basic features since version 2.0. The user postulates the following model and generates a lavaan object from a cfa.
 
-```{r fit}
+```{r fit, eval=FALSE}
 library(lavaan)
 library(dplyr)
 HS.model <- ' visual  =~ x1 + x2 + x3
@@ -84,14 +84,14 @@ fitmeasures(fit)
 
 Based on this fitted object, the user generates simulated fit indices for two models, a correct model and misspecified model. The correct model defaults to "NM" (Niemand & Mai, 2018) with equal loadings and correlations. It is not the empirical model under investigation but a truly correct model (since one cannot be sure that the model is truly correct). The misspecified model is generated from a number of misspecifications that the user perceives as possible for the given model. In the default case, these are 1 cross-loading, 1 omitted correlation and 1 residual covariance (111-model).
 
-```{r simulation 1}
+```{r simulation 1, eval=FALSE}
 #Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
-fits <- gen_fit2(fit = fit, rep = 10)
+fits <- gen_fit2(fit = fit, rep = 100)
 ```
 
 The simulation can be run on multiple cores to speed up simulations. After a while, the simulation is complete and the user can inspect the results via the function flex_co2 providing the results and cutoffs for selected fit indices under different decision rules as well as a plot of the selected fit indices via plot_fit2. By default, CFI is used as the index since it might be the easiest to understand. Indices can be specified by argument index. 
 
-```{r inspect and plot}
+```{r inspect and plot, eval=FALSE}
 flex_co2(fits)
 plot_fit2(fits)
 ```
@@ -106,7 +106,7 @@ The basic idea of flexible cutoffs is that these cutoffs come from a sui-generis
 
 The internal function pop_mod specifies this population model. We offer three types of population models, the NM (Niemand & Mai, 2018) option, the HB (Hu & Bentler, 1999) option, and the EM (empirical) option. Function gen_fit (gen_fit2) internally calls function pop_mod, but the argument type is also available in the latter function for flexibility. We can compare these models by:
 
-```{r population models}
+```{r population models, eval=FALSE}
 FCO:::pop_mod(mod = HS.model, x = lavaan::HolzingerSwineford1939)$pop.mod
 FCO:::pop_mod(mod = HS.model, x = lavaan::HolzingerSwineford1939, type = "HB")$pop.mod
 FCO:::pop_mod(mod = HS.model, x = lavaan::HolzingerSwineford1939, type = "EM")$pop.mod
@@ -118,7 +118,7 @@ When the type is "NM", all loadings (default: .7) and correlations (default: .3)
 
 Starting with version 2.0, other model types other than CFA are also possible, most prominently structural models via CBSEM (SEM). To determine the correct population model, this however requires some assumption, if the population type is "NM" or "HB" as one needs to know what size loadings, correlations, regressions etc. should be assumed. This is obviously not needed if type is "EM", the default. For example, let us assume the example model to be a SEM with a regression and no correlation between F1 and F2:
 
-```{r regression model}
+```{r regression model, eval=FALSE}
 cmod <- "F1 =~ x1 + x2 + x3
           F2 =~ x4 + x5 + x6
           F3 =~ x7 + x8 + x9
@@ -129,7 +129,7 @@ fit2 <- sem(model = cmod, data = lavaan::HolzingerSwineford1939)
 
 fitmeasures(fit2)
 
-fits2 <- gen_fit2(fit = fit2, cfa = FALSE, type = "NM", es.f2 = "moderate", rep = 10)
+fits2 <- gen_fit2(fit = fit2, cfa = FALSE, type = "NM", es.f2 = "moderate", rep = 100)
 
 flex_co2(fits2)
 ```
@@ -138,7 +138,7 @@ By setting the (effect) sizes for loadings (es.lam), correlations (es.cor) und r
 
 What this feature essentially does is avoiding an unfair comparison of a SEM model (which usually has less perfect fit than a comparable CFA as it might not incorporate all correlations, in the example: CFI = .891) used to derive the fit indices with a CFA model (in the example: CFI = .931) which was used to simulate the cutoffs. Instead, a SEM model fit is compared with SEM-model based cutoffs. When extending the simulation to 1,000 replications (rep = 1000L), the cutoffs would be virtually certain that the model fit is "not acceptable" (sum of error types = .02). As a side note, the internal function pop_mod_reg can be used to inspect the population model, for example:
 
-```{r regression pop.mod}
+```{r regression pop.mod, eval=FALSE}
 FCO:::pop_mod_reg(mod = cmod, x = lavaan::HolzingerSwineford1939, type = "NM", es.f2 = "low")$pop.mod
 FCO:::pop_mod_reg(mod = cmod, x = lavaan::HolzingerSwineford1939, type = "NM", es.f2 = "moderate")$pop.mod
 FCO:::pop_mod_reg(mod = cmod, x = lavaan::HolzingerSwineford1939, type = "NM", es.f2 = "large")$pop.mod
@@ -148,7 +148,7 @@ FCO:::pop_mod_reg(mod = cmod, x = lavaan::HolzingerSwineford1939, type = "NM", e
 
 Usually, multivariate normally distributed (normal) (manifest) variables are assumed, which is often not the case. In the original version, users could change, for example after a warning is given, the arguments sk (skewness, default: 0) and ku (kurtosis, default: 1) in gen_fit or gen_fit2 to account for multivariate non-normality. In this case, the simulation function lavaan::simulateData produces data with the set skewness and kurtosis. In version 2, the variable types can be changed as well based on package PoisBinOrdNor, allowing for count, binary, ordinal and normal variables. The user then only needs to provide a vector data.types for each variable (in the proper order) indicating "C" (count), "B" (binary), "O" (ordinal) and "N" (normal) as an argument. For example:
 
-```{r data types}
+```{r data types, eval=FALSE}
 dat <- lavaan::HolzingerSwineford1939
 cdat <- dplyr::select(dat, x1, x2, x3, x4, x5, x6, x7, x8, x9)
 #For demo purposes, some variables are changed:
@@ -162,7 +162,7 @@ cdat <- cdat %>% mutate(
 )
 cfit <- lavaan::cfa(model = HS.model, data = cdat)
 cfits <- gen_fit2(fit = cfit,
-                  data.types = c("C", "B", "C", "B", "O", "N", "N", "O", "N"), rep = 10)
+                  data.types = c("C", "B", "C", "B", "O", "N", "N", "O", "N"), rep = 100)
 flex_co2(cfits)
 plot_fit2(cfits)
 ```
@@ -177,9 +177,9 @@ Since simulations need some time, we implemented multi-core support. Depending o
 
 In the common situation that users have multiple cores, more cores can be set by the argument cores. However, note that the function returns an error if the number of available cores of the system is lower than the number of cores provided by the cores argument (e.g., cores = 4). Of course, multi-core support can be switched off by setting the argument multi.core = FALSE (gen_fit) or cores = 1 (gen_fit2). For example:
 
-```{r mc, eval = FALSE}
-gen_fit2(fit, cores = 4, rep = 10)
-gen_fit2(fit, cores = 1, rep = 10)
+```{r mc, eval=FALSE}
+gen_fit2(fit, cores = 4, rep = 100)
+gen_fit2(fit, cores = 1, rep = 100)
 ```
 
 ### Decision rules (Version 2.0+)
@@ -188,7 +188,7 @@ Instead of the recommendation function for older versions, version 2.0 offers a 
 
 Second, a dataframe is provided that sorts all decision rules (column "dec.rule") by the sum of type I and II errors implied (column "SumTypes") in line with Hu & Bentler (1999). So, the first row represents the best decison rule and its cutoff (and fit index) in terms of overall error. Some other statistics are also provided (e.g., Power, Specificity). Third, a notation is provided assisting users to interpret the evaluation. Finally, some important statistics regarding the distributions (of each fit index) are returned, the percentage of overlap between correct and misspecified models, the AUC (Area under the curve) and a U-test (Effect size d). Percentage overlap indicates how much the distributions of correct and misspecified models intersect each other. A high percentage and a low AUC is indicative of a difficult decision, i.e., the given misspecification is hard to detect. Alternatively, when overlap percentage is low and AUC is high, the cutoffs face a simple decision, i.e., the misspecification is easy to detect. Finally, a U-test effect size (Cohens d converted from r) provides a non-parametric estimate how distant the expected values from both distributions are from each other. Again, a high value indicates a small overlap, hence an easy decision for the cutoffs. This function does not work with gen_fit. 
 
-```{r decision rules}
+```{r decision rules, eval=FALSE}
 #Default evaluation:
 flex_co2(fits)
 #Changed alpha and beta values:
@@ -203,7 +203,7 @@ flex_co2(fits, index = c("CFI", "SRMR", "RMSEA"))
 
 Function plot_fit2 allows users to inspect the simulated distributions of correct and misfit models based on the result from gen_fit2 (e.g., fits). This function does not work with gen_fit. The distribution of the correct models are depicted in darkblue, the misfit models in orange. Vertical lines illustrate the quantiles for both based on alpha (darkblue) and beta (orange) values and can be specified by changing the alpha (default: .05) and beta (default: .10) arguments. Indices can be specified by the argument index, which uses a facet.wrap to display distributions for each index. 
 
-```{r plotting}
+```{r plotting, eval=FALSE}
 #Default plot:
 plot_fit2(fits)
 #Changed alpha and beta values:
@@ -225,7 +225,7 @@ We built the function recommend to incorporate this tailor-fit approach in a use
 
 Since the most obvious application is to conduct a CFA on a novel model, the standard arguments of purpose and focus are set to this application. Hence, when we use no further arguments, we get the following recommendation:
 
-```{r recommend1}
+```{r recommend1, eval=FALSE}
 data(bb1992)
 mod <- "
 F1 =~ Q5 + Q7 + Q8
@@ -234,7 +234,7 @@ F3 =~ Q10 + Q11 + Q12 + Q13 + Q18 + Q19 + Q20 + Q21 + Q22
 F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
-fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 10)
+fits.single <- gen_fit(mod1 = mod, x = bb1992, rep = 100)
 recommend(fits.single)
 ```
 
@@ -246,7 +246,7 @@ The result found here demonstrates the consequences of uncertainty for the decis
 
 Let us assume for a moment that Babakus and Boller had not been as exploratory as they were and simply looked for confirmation of an established measurement model. So, we change the purpose argument to established.
 
-```{r recommend2}
+```{r recommend2, eval=FALSE}
 recommend(fits.single, purpose = "established")
 ```
 
@@ -254,7 +254,7 @@ Now the recommendation changes to CFI with a fixed cutoff. Consequently, no unce
 
 Finally, for exploratory investigations, one can also override the recommendations programmed into the function by using the override argument. This however requires users to provide one or more indices with the argument index (otherwise, an error is returned).
 
-```{r recommend3}
+```{r recommend3, eval=FALSE}
 recommend(fits.single, override = TRUE, index = c("CFI", "SRMR"))
 ```
 
@@ -266,7 +266,7 @@ A popular feature in CBSEM is to compare nested models, for example testing some
 
 Let us assume that the first two factors F1 and F2 might be orthogonal (independent). Hence, we constrain the factor correlation between both to zero (F1 \~\~ 0 \* F2).
 
-```{r constrained model}
+```{r constrained model, eval=FALSE}
 data(bb1992)
 mod <- "
 F1 =~ Q5 + Q7 + Q8
@@ -285,7 +285,7 @@ F5 =~ Q6 + Q14 + Q15 + Q16
 F1 ~~ 0 * F2
 " 
 
-fits.con <- gen_fit(mod1 = mod, mod2 = mod.con, x = bb1992, rep = 10) 
+fits.con <- gen_fit(mod1 = mod, mod2 = mod.con, x = bb1992, rep = 100) 
 
 flex_co(fits = fits.con, index = c("CFI", "SRMR"), alpha.lev = .05) 
 
@@ -302,7 +302,7 @@ A special application of flexible cutoffs could be its ability to test discrimin
 
 Consider that in the example data, factors F4 and F5 are highly correlated (.831), possibly indicating an issue in discriminant validity. To investigate this, we can use the discriminant validity-related arguments of the gen_fit function, termed dv, dv.factors, merge.mod, and dv.cutoff. Argument dv simply tells the function to expect the application of discriminant validity testing. Argument dv.factors provides the factors that should be investigated, in this case F4 and F5. If this argument is missing, it is assumed that the first and second factor of the model should be investigated (F1 & F2). Hence, one should provide the names of the factors if that is not the case. Argument merge.mod is needed if merging should be applied. This argument calls an internal function that takes the original model, changes all indicators of the second factor (F5) specified under dv.factors to be indicators of the first factor (F4), and omits the second factor from estimation. Please note that it does not matter which factor is first or second, as both are merged anyway. Finally, dv.cutoff is required when one wants to apply constraining. The value for this cutoff can be between 0 and 1, but a warning is given if it is lower than .8, as this is generally accepted as the lower border of a discriminant validity issue (Rönkkö & Cho 2022). Some guessing work is implemented here to make the arguments more convenient. For example, if one forgot the argument dv but sets merge.mod = TRUE, merging is still assumed. To make sure the user knows which approach is used, a message indicating the discriminant validity testing approach is returned.
 
-```{r constrain merge}
+```{r constrain merge, eval=FALSE}
 data(bb1992)
 mod <- "
 F1 =~ Q5 + Q7 + Q8
@@ -312,9 +312,9 @@ F4 =~ Q1 + Q17
 F5 =~ Q6 + Q14 + Q15 + Q16
 "
 
-fits.dv.con <- gen_fit(mod1 = mod, x = bb1992, rep = 10, dv = TRUE, dv.factors = c("F4", "F5"), dv.cutoff = .9) 
+fits.dv.con <- gen_fit(mod1 = mod, x = bb1992, rep = 100, dv = TRUE, dv.factors = c("F4", "F5"), dv.cutoff = .9) 
 
-fits.dv.merge <- gen_fit(mod1 = mod, x = bb1992, rep = 10, dv = TRUE, dv.factors = c("F4", "F5"), merge.mod = TRUE)
+fits.dv.merge <- gen_fit(mod1 = mod, x = bb1992, rep = 100, dv = TRUE, dv.factors = c("F4", "F5"), merge.mod = TRUE)
 
 flex_co(fits = fits.dv.con, index = "CFI", alpha.lev = .05) 
 flex_co(fits = fits.dv.merge, index = "CFI", alpha.lev = .05)
@@ -346,7 +346,7 @@ Similar to the relative fit comparison case, the function returns tables for eac
 
 Since the code to obtain these values is rather extensive and hence to make user's work easier, we provide a recommendation function recommend_dv that incorporates the previously described considerations. As with the recommend function for single fit indicators, it requires a result from gen_fit with appropriate arguments and, optionally, names of the fit indices (CFI is used if not provided). Results are rounded to 3 digits, but can be changed to 1 to 5 digits if needed, for example by digits = 5.
 
-```{r recommend_dv}
+```{r recommend_dv, eval=FALSE}
 recommend_dv(fits.dv.con) 
 recommend_dv(fits.dv.merge)
 ```

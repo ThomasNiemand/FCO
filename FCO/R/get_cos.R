@@ -17,70 +17,52 @@ return(fco1)
 
 get_FCO2 <- function(co, tab, ind) {
   ix <- index_guess(ind)
+  tab_correct <- tab %>%
+    dplyr::filter(mod == "correct", quant == co$alpha)
+  tab_miss <- tab %>%
+    dplyr::filter(mod == "miss", quant == co$beta)
+  correct_val <- tab_correct %>%
+    dplyr::pull(dplyr::contains(ind))
+  miss_val <- tab_miss %>%
+    dplyr::pull(dplyr::contains(ind))
   if (ix == "GoF") {
-    fco2 <- as.numeric(
-      dplyr::if_else(
-        tab %>% dplyr::filter(mod == "correct" & quant == co$alpha) %>%
-          dplyr::select(dplyr::contains(ind)) > tab %>% dplyr::filter(mod == "miss" &
-                                                                 quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        tab %>% dplyr::filter(mod == "miss" &
-                                quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        tab %>% dplyr::filter(mod == "correct" &
-                                quant == co$alpha) %>%
-          dplyr::select(dplyr::contains(ind))
-      )
-    )
+    fco2 <- as.numeric(dplyr::if_else(correct_val > miss_val,
+                                      miss_val,
+                                      correct_val))
   }
-  if (ix == "BoF") {
-    fco2 <- as.numeric(
-      dplyr::if_else(
-        tab %>% dplyr::filter(mod == "correct" & quant == co$alpha) %>%
-          dplyr::select(dplyr::contains(ind)) < tab %>% dplyr::filter(mod == "miss" &
-                                                                 quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        tab %>% dplyr::filter(mod == "miss" &
-                                quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        tab %>% dplyr::filter(mod == "correct" &
-                                quant == co$alpha) %>%
-          dplyr::select(dplyr::contains(ind))
-      )
-    )
+  else if (ix == "BoF") {
+    fco2 <- as.numeric(dplyr::if_else(correct_val < miss_val,
+                                      miss_val,
+                                      correct_val))
+  }
+  else {
+    stop("Unknown index type: ", ix)
   }
   return(fco2)
 }
 
 get_DFI <- function(co, tab, ind) {
   ix <- index_guess(ind)
+  tab_correct <- tab %>%
+    dplyr::filter(mod == "correct", quant == co$alpha)
+  tab_miss <- tab %>%
+    dplyr::filter(mod == "miss", quant == co$beta)
+  correct_val <- tab_correct %>%
+    dplyr::pull(dplyr::contains(ind))
+  miss_val <- tab_miss %>%
+    dplyr::pull(dplyr::contains(ind))
   if (ix == "GoF") {
-    dfi <- as.numeric(
-      dplyr::if_else(
-        tab %>% dplyr::filter(mod == "correct" & quant == co$alpha) %>%
-          dplyr::select(dplyr::contains(ind)) > tab %>% dplyr::filter(mod == "miss" &
-                                                                 quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        tab %>% dplyr::filter(mod == "miss" &
-                                quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        NA
-      )
-    )
+    dfi <- as.numeric(dplyr::if_else(correct_val > miss_val,
+                                      miss_val,
+                                      NA))
   }
-  if (ix == "BoF") {
-    dfi <- as.numeric(
-      dplyr::if_else(
-        tab %>% dplyr::filter(mod == "correct" & quant == co$alpha) %>%
-          dplyr::select(dplyr::contains(ind)) < tab %>% dplyr::filter(mod == "miss" &
-                                                                 quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        tab %>% dplyr::filter(mod == "miss" &
-                                quant == co$beta) %>%
-          dplyr::select(dplyr::contains(ind)),
-        NA
-      )
-    )
+  else if (ix == "BoF") {
+    dfi <- as.numeric(dplyr::if_else(correct_val < miss_val,
+                                      miss_val,
+                                      NA))
+  }
+  else {
+    stop("Unknown index type: ", ix)
   }
   return(dfi)
 }

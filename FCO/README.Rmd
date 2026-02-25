@@ -16,13 +16,21 @@ knitr::opts_chunk$set(
 
 ## Changes in FCO
 
+### FCO 2.0.2
+
+* Small changes to solve CRAN check errors on some platforms.
+
+------------------------------------------------------------------------
+
+### FCO 2.0.1
+
+* Skewness and kurtosis now estimated by an internal function as semTools may be archived.
+
 ### FCO 2.0.0
 
 * New release including new functions (e.g., gen_fit2, flex_co2, plot_fit2)
 * The new functions now incorporate multiple extensions of the tool for multple decision rules, Type I and II error control and convenience
 * Old functions remain available for compatibility
-
-------------------------------------------------------------------------
 
 ### FCO 0.8.0
 
@@ -91,7 +99,7 @@ library(FCO)
 This is the basic usage for FCO in case of deriving flexible cutoffs for
 a single model:
 
-```{r example}
+```{r example, eval=FALSE}
 library(FCO)
 library(lavaan)
 HS.model <- ' visual  =~ x1 + x2 + x3
@@ -108,7 +116,7 @@ fitmeasures(fit)
 
 #Simulation
 #Note: Demonstration only! Please use higher numbers of replications for your applications (>= 500).
-fits <- gen_fit2(fit = fit, rep = 10)
+fits <- gen_fit2(fit = fit, rep = 100)
 
 #Obtain and plot cutoffs
 flex_co2(fits)
