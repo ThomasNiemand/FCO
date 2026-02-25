@@ -55,6 +55,6 @@ flex_co2(fits)
 flex_co2(fits, alpha = .05, beta = .05)
 flex_co2(fits, alpha = .10, beta = .20)
 #Different fit indices:
-flex_co2(fits, index = c("CFI", "SRMR", "RMSEA"))
+flex_co2(fits, index = c("CFI", "SRMR", "RMSEA"))}
 }
 }
